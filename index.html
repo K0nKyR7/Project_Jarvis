@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#18191e" id="meta-theme-color">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Климат">
+  <link rel="manifest" href="/manifest.json">
+  <title>Климат Квартира</title>
+  <style>
+    :root {
+      /* Theme 1: Midnight Slate (Default) */
+      --bg-body: #090a0d;
+      --bg-card: #18191e;
+      --bg-card-hover: #1c1e24;
+      --bg-led-card: #121318;
+      --bg-input: #0f1013;
+      --border-color: #23252b;
+      --border-color-hover: #38bdf844;
+      --border-led: #1f2128;
+      --text-main: #e2e8f0;
+      --text-heading: #ffffff;
+      --text-muted: #71717a;
+      --text-sub: #a1a1aa;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.25);
+      --accent-btn: #0284c7;
+      --accent-btn-hover: #0369a1;
+      --badge-bg: #1e293b;
+      --badge-border: #334155;
+      --card-shadow: 0 8px 20px rgba(0,0,0,0.35);
+      --card-shadow-hover: 0 14px 30px rgba(0,0,0,0.55), 0 0 15px rgba(56, 189, 248, 0.12);
+      --led-shadow: 0 12px 32px rgba(0,0,0,0.5);
+      --led-shadow-hover: 0 16px 40px rgba(0,0,0,0.65), 0 0 25px rgba(56, 189, 248, 0.15);
+    }
+
+    body[data-theme="cyberpunk"] {
+      /* Theme 2: Cyberpunk Neon */
+      --bg-body: #0b0717;
+      --bg-card: #150d2b;
+      --bg-card-hover: #1c113b;
+      --bg-led-card: #100a20;
+      --bg-input: #0a0614;
+      --border-color: #3b1b6e;
+      --border-color-hover: #ff007f88;
+      --border-led: #4c228d;
+      --text-main: #e0d7f5;
+      --text-heading: #00f0ff;
+      --text-muted: #8b71b8;
+      --text-sub: #c0a8ea;
+      --accent: #00f0ff;
+      --accent-glow: rgba(0, 240, 255, 0.35);
+      --accent-btn: #ff007f;
+      --accent-btn-hover: #d6006b;
+      --badge-bg: #221244;
+      --badge-border: #4d2491;
+      --card-shadow: 0 8px 24px rgba(255,0,127,0.15);
+      --card-shadow-hover: 0 14px 34px rgba(255,0,127,0.3), 0 0 20px rgba(0, 240, 255, 0.2);
+      --led-shadow: 0 12px 32px rgba(0,240,255,0.2);
+      --led-shadow-hover: 0 16px 42px rgba(0,240,255,0.35);
+    }
+
+    /* Theme: Уютная гостиная / Тёплый дом */
+    body[data-theme="cozy"] {
+      --bg-body: #16110e;
+      --bg-card: rgba(32, 24, 20, 0.78);
+      --bg-card-hover: rgba(45, 34, 28, 0.88);
+      --bg-led-card: rgba(26, 20, 16, 0.82);
+      --bg-input: rgba(20, 15, 12, 0.9);
+      --border-color: rgba(245, 158, 11, 0.28);
+      --border-color-hover: rgba(245, 158, 11, 0.65);
+      --border-led: rgba(245, 158, 11, 0.38);
+      --text-main: #fef3c7;
+      --text-heading: #ffffff;
+      --text-muted: #d97706;
+      --text-sub: #fde68a;
+      --accent: #f59e0b;
+      --accent-glow: rgba(245, 158, 11, 0.4);
+      --accent-btn: #d97706;
+      --accent-btn-hover: #b45309;
+      --badge-bg: rgba(50, 35, 25, 0.75);
+      --badge-border: rgba(245, 158, 11, 0.35);
+      --card-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 22px rgba(245, 158, 11, 0.18);
+      --card-shadow-hover: 0 16px 42px rgba(0, 0, 0, 0.8), 0 0 30px rgba(245, 158, 11, 0.35);
+      --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.7), 0 0 28px rgba(245, 158, 11, 0.22);
+      --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 38px rgba(245, 158, 11, 0.42);
+    }
+    body[data-theme="cozy"] {
+      background: linear-gradient(rgba(22, 17, 14, 0.45), rgba(22, 17, 14, 0.62)), url('cozy.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body[data-theme="cozy"] .card,
+    body[data-theme="cozy"] .led-card,
+    body[data-theme="cozy"] .comfort-bar,
+    body[data-theme="cozy"] .settings-card,
+    body[data-theme="cozy"] .system-card {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* Theme: Туманный Нуар (Ночная туманная дорога, мягкий свет фонарей, кинематографичный монохром) */
+    body[data-theme="fog"] {
+      --bg-body: #0d0e11;
+      --bg-card: rgba(18, 20, 24, 0.72);
+      --bg-card-hover: rgba(26, 29, 36, 0.82);
+      --bg-led-card: rgba(16, 18, 22, 0.76);
+      --bg-input: rgba(11, 12, 15, 0.88);
+      --border-color: rgba(226, 232, 240, 0.16);
+      --border-color-hover: rgba(226, 232, 240, 0.45);
+      --border-led: rgba(226, 232, 240, 0.22);
+      --text-main: #e2e8f0;
+      --text-heading: #ffffff;
+      --text-muted: #848b98;
+      --text-sub: #cbd5e1;
+      --accent: #e2e8f0;
+      --accent-glow: rgba(255, 255, 255, 0.3);
+      --accent-btn: #334155;
+      --accent-btn-hover: #475569;
+      --badge-bg: rgba(26, 29, 36, 0.75);
+      --badge-border: rgba(226, 232, 240, 0.2);
+      --card-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 20px rgba(255, 255, 255, 0.05);
+      --card-shadow-hover: 0 16px 42px rgba(0, 0, 0, 0.8), 0 0 28px rgba(255, 255, 255, 0.18);
+      --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.7), 0 0 26px rgba(255, 255, 255, 0.1);
+      --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 36px rgba(255, 255, 255, 0.25);
+    }
+    body[data-theme="fog"] {
+      background: linear-gradient(rgba(10, 11, 14, 0.38), rgba(10, 11, 14, 0.52)), url('fog.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body[data-theme="fog"] .card,
+    body[data-theme="fog"] .led-card,
+    body[data-theme="fog"] .comfort-bar,
+    body[data-theme="fog"] .settings-card,
+    body[data-theme="fog"] .system-card {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* Theme: Зелёный оазис и ротанг */
+    body[data-theme="oasis"] {
+      --bg-body: #111a14;
+      --bg-card: rgba(22, 34, 26, 0.78);
+      --bg-card-hover: rgba(30, 48, 36, 0.88);
+      --bg-led-card: rgba(18, 28, 21, 0.82);
+      --bg-input: rgba(13, 20, 15, 0.9);
+      --border-color: rgba(52, 211, 153, 0.28);
+      --border-color-hover: rgba(52, 211, 153, 0.65);
+      --border-led: rgba(52, 211, 153, 0.38);
+      --text-main: #ecfdf5;
+      --text-heading: #ffffff;
+      --text-muted: #6ee7b7;
+      --text-sub: #a7f3d0;
+      --accent: #10b981;
+      --accent-glow: rgba(16, 185, 129, 0.4);
+      --accent-btn: #059669;
+      --accent-btn-hover: #047857;
+      --badge-bg: rgba(20, 40, 28, 0.75);
+      --badge-border: rgba(52, 211, 153, 0.35);
+      --card-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 22px rgba(16, 185, 129, 0.18);
+      --card-shadow-hover: 0 16px 42px rgba(0, 0, 0, 0.8), 0 0 30px rgba(16, 185, 129, 0.35);
+      --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.7), 0 0 28px rgba(16, 185, 129, 0.22);
+      --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 38px rgba(16, 185, 129, 0.42);
+    }
+    body[data-theme="oasis"] {
+      background: linear-gradient(rgba(18, 26, 20, 0.44), rgba(18, 26, 20, 0.62)), url('oasis.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body[data-theme="oasis"] .card,
+    body[data-theme="oasis"] .led-card,
+    body[data-theme="oasis"] .comfort-bar,
+    body[data-theme="oasis"] .settings-card,
+    body[data-theme="oasis"] .system-card {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* Theme: Сканди-минимализм / Жёлтое кресло */
+    body[data-theme="nordic"] {
+      --bg-body: #141416;
+      --bg-card: rgba(26, 26, 30, 0.8);
+      --bg-card-hover: rgba(36, 36, 42, 0.9);
+      --bg-led-card: rgba(22, 22, 25, 0.82);
+      --bg-input: rgba(16, 16, 18, 0.9);
+      --border-color: rgba(234, 179, 8, 0.3);
+      --border-color-hover: rgba(234, 179, 8, 0.7);
+      --border-led: rgba(234, 179, 8, 0.4);
+      --text-main: #fef9c3;
+      --text-heading: #ffffff;
+      --text-muted: #eab308;
+      --text-sub: #fef08a;
+      --accent: #eab308;
+      --accent-glow: rgba(234, 179, 8, 0.4);
+      --accent-btn: #ca8a04;
+      --accent-btn-hover: #a16207;
+      --badge-bg: rgba(40, 36, 20, 0.75);
+      --badge-border: rgba(234, 179, 8, 0.35);
+      --card-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 22px rgba(234, 179, 8, 0.18);
+      --card-shadow-hover: 0 16px 42px rgba(0, 0, 0, 0.8), 0 0 30px rgba(234, 179, 8, 0.35);
+      --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.7), 0 0 28px rgba(234, 179, 8, 0.22);
+      --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 38px rgba(234, 179, 8, 0.42);
+    }
+    body[data-theme="nordic"] {
+      background: linear-gradient(rgba(20, 20, 22, 0.45), rgba(20, 20, 22, 0.62)), url('nordic.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body[data-theme="nordic"] .card,
+    body[data-theme="nordic"] .led-card,
+    body[data-theme="nordic"] .comfort-bar,
+    body[data-theme="nordic"] .settings-card,
+    body[data-theme="nordic"] .system-card {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* Theme: Латунь и изумрудный бархат */
+    body[data-theme="dining"] {
+      --bg-body: #0d1712;
+      --bg-card: rgba(16, 30, 24, 0.78);
+      --bg-card-hover: rgba(24, 42, 34, 0.88);
+      --bg-led-card: rgba(13, 24, 19, 0.82);
+      --bg-input: rgba(10, 18, 14, 0.9);
+      --border-color: rgba(5, 150, 105, 0.3);
+      --border-color-hover: rgba(5, 150, 105, 0.7);
+      --border-led: rgba(5, 150, 105, 0.4);
+      --text-main: #d1fae5;
+      --text-heading: #ffffff;
+      --text-muted: #34d399;
+      --text-sub: #a7f3d0;
+      --accent: #059669;
+      --accent-glow: rgba(5, 150, 105, 0.4);
+      --accent-btn: #047857;
+      --accent-btn-hover: #065f46;
+      --badge-bg: rgba(18, 38, 28, 0.75);
+      --badge-border: rgba(5, 150, 105, 0.35);
+      --card-shadow: 0 12px 32px rgba(0, 0, 0, 0.65), 0 0 22px rgba(5, 150, 105, 0.18);
+      --card-shadow-hover: 0 16px 42px rgba(0, 0, 0, 0.8), 0 0 30px rgba(5, 150, 105, 0.35);
+      --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.7), 0 0 28px rgba(5, 150, 105, 0.22);
+      --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 38px rgba(5, 150, 105, 0.42);
+    }
+    body[data-theme="dining"] {
+      background: linear-gradient(rgba(12, 22, 18, 0.45), rgba(12, 22, 18, 0.62)), url('dining.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body[data-theme="dining"] .card,
+    body[data-theme="dining"] .led-card,
+    body[data-theme="dining"] .comfort-bar,
+    body[data-theme="dining"] .settings-card,
+    body[data-theme="dining"] .system-card {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* Theme: VIPERR / Toxic Cyber Goth */
+    body[data-theme="viperr"] {
+      --bg-body: #050805;
+      --bg-card: rgba(8, 14, 9, 0.82);
+      --bg-card-hover: rgba(12, 22, 14, 0.92);
+      --bg-led-card: rgba(7, 12, 8, 0.86);
+      --bg-input: rgba(6, 10, 7, 0.94);
+      --border-color: rgba(34, 197, 94, 0.35);
+      --border-color-hover: rgba(74, 222, 128, 0.85);
+      --border-led: rgba(34, 197, 94, 0.45);
+      --text-main: #dcfce7;
+      --text-heading: #ffffff;
+      --text-muted: #4ade80;
+      --text-sub: #bbf7d0;
+      --accent: #22c55e;
+      --accent-glow: rgba(34, 197, 94, 0.55);
+      --accent-btn: #16a34a;
+      --accent-btn-hover: #15803d;
+      --badge-bg: rgba(14, 32, 18, 0.85);
+      --badge-border: rgba(74, 222, 128, 0.45);
+      --card-shadow: 0 12px 32px rgba(0, 0, 0, 0.85), 0 0 24px rgba(34, 197, 94, 0.22);
+      --card-shadow-hover: 0 16px 42px rgba(0, 0, 0, 0.95), 0 0 34px rgba(34, 197, 94, 0.45);
+      --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.9), 0 0 28px rgba(34, 197, 94, 0.28);
+      --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.95), 0 0 40px rgba(34, 197, 94, 0.55);
+    }
+    body[data-theme="viperr"] {
+      background: linear-gradient(rgba(5, 8, 5, 0.45), rgba(5, 8, 5, 0.65)), url('viperr.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body[data-theme="viperr"] .card,
+    body[data-theme="viperr"] .led-card,
+    body[data-theme="viperr"] .comfort-bar,
+    body[data-theme="viperr"] .settings-card,
+    body[data-theme="viperr"] .system-card {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* Theme: Y2K Chrome / Cyber Sigilism */
+    body[data-theme="y2k"] {
+      --bg-body: #06070a;
+      --bg-card: rgba(14, 16, 24, 0.82);
+      --bg-card-hover: rgba(22, 26, 38, 0.92);
+      --bg-led-card: rgba(11, 13, 20, 0.86);
+      --bg-input: rgba(8, 10, 16, 0.94);
+      --border-color: rgba(226, 232, 240, 0.32);
+      --border-color-hover: rgba(255, 255, 255, 0.85);
+      --border-led: rgba(226, 232, 240, 0.45);
+      --text-main: #f8fafc;
+      --text-heading: #ffffff;
+      --text-muted: #94a3b8;
+      --text-sub: #cbd5e1;
+      --accent: #f1f5f9;
+      --accent-glow: rgba(255, 255, 255, 0.5);
+      --accent-btn: #334155;
+      --accent-btn-hover: #475569;
+      --badge-bg: rgba(30, 36, 50, 0.85);
+      --badge-border: rgba(226, 232, 240, 0.45);
+      --card-shadow: 0 12px 32px rgba(0, 0, 0, 0.85), 0 0 24px rgba(255, 255, 255, 0.15);
+      --card-shadow-hover: 0 16px 42px rgba(0, 0, 0, 0.95), 0 0 34px rgba(255, 255, 255, 0.35);
+      --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.9), 0 0 28px rgba(255, 255, 255, 0.2);
+      --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.95), 0 0 40px rgba(255, 255, 255, 0.45);
+    }
+    body[data-theme="y2k"] {
+      background: linear-gradient(rgba(6, 7, 10, 0.45), rgba(6, 7, 10, 0.65)), url('y2k.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body[data-theme="y2k"] .card,
+    body[data-theme="y2k"] .led-card,
+    body[data-theme="y2k"] .comfort-bar,
+    body[data-theme="y2k"] .settings-card,
+    body[data-theme="y2k"] .system-card {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* Theme: DRAIN / Icy Webcore */
+    body[data-theme="drain"] {
+      --bg-body: #050912;
+      --bg-card: rgba(10, 16, 28, 0.82);
+      --bg-card-hover: rgba(16, 26, 44, 0.92);
+      --bg-led-card: rgba(8, 13, 24, 0.86);
+      --bg-input: rgba(6, 10, 18, 0.94);
+      --border-color: rgba(56, 189, 248, 0.35);
+      --border-color-hover: rgba(125, 211, 252, 0.85);
+      --border-led: rgba(56, 189, 248, 0.45);
+      --text-main: #e0f2fe;
+      --text-heading: #ffffff;
+      --text-muted: #7dd3fc;
+      --text-sub: #bae6fd;
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.55);
+      --accent-btn: #0284c7;
+      --accent-btn-hover: #0369a1;
+      --badge-bg: rgba(16, 32, 54, 0.85);
+      --badge-border: rgba(56, 189, 248, 0.45);
+      --card-shadow: 0 12px 32px rgba(0, 0, 0, 0.85), 0 0 24px rgba(56, 189, 248, 0.22);
+      --card-shadow-hover: 0 16px 42px rgba(0, 0, 0, 0.95), 0 0 34px rgba(56, 189, 248, 0.45);
+      --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.9), 0 0 28px rgba(56, 189, 248, 0.28);
+      --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.95), 0 0 40px rgba(56, 189, 248, 0.55);
+    }
+    body[data-theme="drain"] {
+      background: linear-gradient(rgba(5, 9, 18, 0.45), rgba(5, 9, 18, 0.65)), url('drain.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body[data-theme="drain"] .card,
+    body[data-theme="drain"] .led-card,
+    body[data-theme="drain"] .comfort-bar,
+    body[data-theme="drain"] .settings-card,
+    body[data-theme="drain"] .system-card {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+    body {
+      margin: 0;
+      padding: max(16px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+      background: var(--bg-body);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      display: flex;
+      justify-content: center;
+      transition: background 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .container {
+      width: 100%;
+      max-width: 820px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .header h2 { 
+      font-size: 24px; 
+      font-weight: 600; 
+      color: var(--text-heading);
+      transition: color 0.3s;
+      margin: 0;
+    }
+    .header-sub {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .header-actions { display: flex; gap: 8px; align-items: center; }
+
+    /* Chip Badges for Sensor & Status */
+    .chip-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 500;
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      color: var(--text-sub);
+      transition: all 0.25s ease;
+    }
+    .chip-badge:hover {
+      border-color: var(--accent);
+      color: var(--text-heading);
+    }
+
+    /* Connection Ping Badge */
+    .conn-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 500;
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      color: var(--text-sub);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: default;
+    }
+    .conn-badge:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+    .ping-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 6px #22c55e;
+      transition: background 0.3s, box-shadow 0.3s;
+    }
+    .conn-badge.connecting .ping-dot {
+      background: #eab308;
+      box-shadow: 0 0 6px #eab308;
+      animation: pulse 1s infinite;
+    }
+    .conn-badge.offline .ping-dot {
+      background: #ef4444;
+      box-shadow: 0 0 6px #ef4444;
+      animation: none;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.5; transform: scale(0.9); }
+      50% { opacity: 1; transform: scale(1.15); }
+      100% { opacity: 0.5; transform: scale(0.9); }
+    }
+
+    /* Buttons with hover lift and glow */
+    .btn-tg {
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      color: var(--accent);
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-tg:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--accent);
+      box-shadow: 0 4px 14px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+    .btn-tg:active { 
+      transform: scale(0.96) translateY(0); 
+    }
+
+    .theme-select {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 13px;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .theme-select:hover {
+      border-color: var(--accent);
+      box-shadow: 0 0 10px var(--accent-glow);
+      transform: translateY(-1px);
+    }
+    .theme-select:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    /* LED Card with Hover Lift */
+    .led-card {
+      background: var(--bg-led-card);
+      border: 1px solid var(--border-led);
+      border-radius: 20px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      box-shadow: var(--led-shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+    }
+    .led-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--led-shadow-hover);
+      border-color: var(--border-color-hover);
+    }
+    .led-info { display: flex; flex-direction: column; gap: 6px; z-index: 3; }
+    .led-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.9px; color: var(--text-muted); }
+    .led-status { font-size: 20px; font-weight: 600; color: var(--text-heading); transition: color 0.4s ease; }
+    .led-subtext { font-size: 13px; color: var(--text-sub); }
+    .led-badge-row { display: flex; gap: 8px; margin-top: 4px; }
+    .mode-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 500;
+      background: var(--badge-bg);
+      color: var(--text-sub);
+      border: 1px solid var(--badge-border);
+      transition: all 0.25s ease;
+    }
+    .mode-badge:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .led-viewport {
+      width: 170px;
+      height: 170px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+    .led-card:hover .led-viewport {
+      transform: scale(1.04);
+    }
+    #flare-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 170px;
+      height: 170px;
+      pointer-events: none;
+      z-index: 1;
+      mix-blend-mode: screen;
+    }
+    .led-svg {
+      width: 86px;
+      height: 112px;
+      position: relative;
+      z-index: 2;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
+      transition: filter 0.3s ease;
+    }
+
+    /* Comfort metrics bar */
+    .comfort-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 14px;
+      background: var(--bg-led-card);
+      border: 1px solid var(--border-led);
+      border-radius: 16px;
+      padding: 14px 18px;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+    }
+    .comfort-bar:hover {
+      transform: translateY(-2px);
+      border-color: var(--border-color-hover);
+      box-shadow: var(--card-shadow);
+    }
+    .comfort-item { display: flex; flex-direction: column; gap: 4px; }
+    .comfort-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+    .comfort-val { font-size: 18px; font-weight: 600; color: var(--text-heading); display: flex; align-items: baseline; gap: 4px; }
+    .comfort-desc { font-size: 12px; color: var(--accent); transition: color 0.3s; }
+
+    .grid-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    /* Metric Cards with Rich Hover */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 18px 20px 14px;
+      box-shadow: var(--card-shadow);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, background 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--card-shadow-hover);
+      border-color: var(--border-color-hover);
+      background: var(--bg-card-hover);
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .card-title { font-size: 15px; color: var(--text-sub); font-weight: 500; transition: color 0.25s; }
+    .card:hover .card-title { color: var(--text-heading); }
+
+    .card-icon {
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease;
+    }
+    .card:hover .card-icon {
+      transform: scale(1.18) rotate(4deg);
+      filter: drop-shadow(0 0 6px var(--accent-glow));
+    }
+
+    .val-row {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 8px;
+    }
+    .val-num {
+      font-size: 34px;
+      font-weight: 600;
+      color: var(--text-heading);
+      letter-spacing: -1px;
+      font-variant-numeric: tabular-nums;
+      transition: transform 0.25s ease;
+    }
+    .card:hover .val-num {
+      transform: scale(1.02);
+    }
+    .val-unit { font-size: 18px; color: var(--text-sub); }
+
+    .status-badge {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      transition: all 0.25s ease;
+    }
+    .card:hover .status-badge {
+      transform: translateY(-1px);
+    }
+    .badge-ok { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.25); }
+    .badge-warn { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.25); }
+    
+    .graph-container {
+      position: relative;
+      width: 100%;
+      height: 75px;
+      margin-top: auto;
+      cursor: crosshair;
+    }
+    svg.graph-svg { width: 100%; height: 100%; overflow: visible; }
+    path#t-line, path#h-line { transition: d 0.4s ease, stroke-width 0.25s ease; }
+    .graph-container:hover path#t-line,
+    .graph-container:hover path#h-line {
+      stroke-width: 3.5px;
+    }
+
+    .range-pill {
+      position: absolute;
+      left: 0;
+      padding: 2px 6px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 11px;
+      color: var(--text-sub);
+      pointer-events: none;
+      z-index: 2;
+      transition: all 0.2s ease;
+    }
+    .card:hover .range-pill {
+      border-color: var(--border-color-hover);
+      color: var(--text-main);
+    }
+    .range-max { top: 0; }
+    .range-min { bottom: 0; }
+    
+    .tooltip {
+      position: absolute;
+      padding: 4px 10px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color-hover);
+      color: var(--text-heading);
+      font-size: 11px;
+      font-weight: 500;
+      border-radius: 6px;
+      pointer-events: none;
+      opacity: 0;
+      transform: translate(-50%, -120%);
+      transition: opacity 0.15s, transform 0.15s;
+      white-space: nowrap;
+      z-index: 10;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.6);
+    }
+
+    /* Settings Card */
+    .settings-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 18px;
+      padding: 16px 20px;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+    }
+    .settings-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--card-shadow);
+      border-color: var(--border-color-hover);
+    }
+    .settings-header {
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .setting-item label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; transition: color 0.2s; }
+    .setting-item:hover label { color: var(--text-main); }
+    .setting-item .inputs { display: flex; gap: 8px; align-items: center; }
+    .setting-item input[type="number"] {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-heading);
+      padding: 7px 10px;
+      font-size: 13px;
+      outline: none;
+      transition: all 0.25s ease;
+    }
+    .setting-item input[type="number"]:hover {
+      border-color: var(--accent);
+      background: var(--bg-card-hover);
+    }
+    .setting-item input[type="number"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .slider-row input[type="range"] {
+      flex: 1;
+      accent-color: var(--accent-btn);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .slider-row input[type="range"]:hover {
+      transform: scaleY(1.2);
+    }
+    .slider-val {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent);
+      width: 38px;
+      text-align: right;
+      transition: transform 0.2s;
+    }
+    .slider-row:hover .slider-val {
+      transform: scale(1.1);
+    }
+
+    /* Save Button with Glow Lift */
+    .label-hint {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 400;
+      margin-left: 4px;
+      opacity: 0.85;
+    }
+    .btn-reset {
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      color: var(--text-sub);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s ease;
+    }
+    .btn-reset:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .btn-reset:active {
+      transform: scale(0.96);
+    }
+
+    .btn-save {
+      margin-top: 14px;
+      width: 100%;
+      background: var(--accent-btn);
+      color: #fff;
+      border: none;
+      padding: 11px;
+      border-radius: 8px;
+      font-weight: 500;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .btn-save:hover {
+      background: var(--accent-btn-hover);
+      box-shadow: 0 6px 18px var(--accent-glow);
+      transform: translateY(-2px);
+    }
+    .btn-save:active {
+      transform: scale(0.98) translateY(0);
+    }
+
+    .system-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-size: 13px;
+      color: var(--text-muted);
+      transition: all 0.3s ease;
+    }
+    .system-card:hover {
+      border-color: var(--border-color-hover);
+      transform: translateY(-1px);
+    }
+    .system-card b { color: var(--text-main); }
+
+    .graph-timeline {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      color: var(--text-muted);
+      margin-top: 5px;
+      padding: 0 4px;
+      user-select: none;
+      -webkit-user-select: none;
+      letter-spacing: 0.3px;
+    }
+
+    /* ========== АДАПТИВНОСТЬ ДЛЯ ПЛАНШЕТОВ И IPAD (601px - 1024px) ========== */
+    @media (min-width: 601px) and (max-width: 1024px) {
+      .container { max-width: 95%; gap: 16px; }
+      .grid-row { gap: 14px; }
+      .card { padding: 18px 20px 14px; }
+      .val-num { font-size: 36px; }
+      .graph-container { height: 80px; }
+      .settings-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
+    }
+
+    /* ========== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ (<= 600px) ========== */
+    @media (max-width: 600px) {
+      body {
+        padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
+      }
+      .header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+      .header-actions {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 8px;
+      }
+      .theme-select {
+        width: 100%;
+        min-height: 44px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+      .btn-tg {
+        min-height: 44px;
+        padding: 0 16px;
+        justify-content: center;
+      }
+      .led-card {
+        flex-direction: column-reverse;
+        text-align: center;
+        padding: 18px 16px;
+        gap: 12px;
+      }
+      .led-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .led-badge-row {
+        justify-content: center;
+      }
+      .grid-row, .comfort-bar {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .settings-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .setting-item input[type="number"] {
+        min-height: 42px;
+        font-size: 15px;
+      }
+      .setting-item input[type="range"] {
+        height: 32px;
+      }
+      .val-num {
+        font-size: 36px;
+      }
+      .graph-container {
+        height: 80px;
+        touch-action: pan-y;
+      }
+    }
+
+    .trend-badge {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      padding: 2px 7px;
+      border-radius: 8px;
+      margin-left: 8px;
+      letter-spacing: 0.3px;
+    }
+    .tools-row {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    @media (max-width: 600px) {
+      .tools-row { flex-direction: column; }
+    }
+    .btn-tool {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-sub);
+      text-decoration: none;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+    .btn-tool:hover {
+      border-color: var(--accent);
+      color: var(--text-heading);
+      background: var(--bg-card-hover);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="header-left">
+        <h2>Климат Квартира</h2>
+        <div class="header-sub">
+          <span>climat.local</span>
+          <span>•</span>
+          <span id="clock-val">--:--:--</span>
+          <span>•</span>
+          <div class="conn-badge" id="conn-badge" title="Статус реального времени SSE">
+            <span class="ping-dot" id="ping-dot"></span>
+            <span id="ping-text">Подключение...</span>
+          </div>
+          <span class="chip-badge" id="sensor-badge" title="Активный датчик климата">Датчик...</span>
+          <span class="chip-badge" id="clients-badge" title="Активные подключения">👥 1</span>
+        </div>
+      </div>
+      <div class="header-actions">
+        <!-- Theme Selector -->
+        <select class="theme-select" id="theme-select" onchange="changeTheme(this.value)">
+          <option value="cozy">🏡 Тёплый интерьер</option>
+          <option value="fog">🌫️ Туман</option>
+          <option value="oasis">🪴 Зелёный оазис</option>
+          <option value="nordic">💛 Сканди-минимализм</option>
+          <option value="dining">🍸 Изумрудный лаунж</option>
+          <option value="viperr">🐍 VIPERR</option>
+          <option value="y2k">💿 Y2K Chrome</option>
+          <option value="drain">🧊 DRAIN</option>
+          <option value="midnight">🌙 Midnight (Стандарт)</option>
+          <option value="cyberpunk">⚡ Cyberpunk</option>
+        </select>
+
+        <!-- Telegram Button -->
+        <button class="btn-tg" onclick="sendTg()">
+          <span>Отчёт в TG</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="led-card">
+      <div class="led-info">
+        <span class="led-title">Индикатор комфорта (LED HW-479)</span>
+        <span class="led-status" id="led-status-text">Определение...</span>
+        <span class="led-subtext" id="led-desc-text">Синхронизация с датчиком...</span>
+        <div class="led-badge-row">
+          <span class="mode-badge" id="mode-badge">☀️ День</span>
+          <span class="mode-badge" id="bright-badge">Яркость: 100%</span>
+        </div>
+      </div>
+      <div class="led-viewport">
+        <canvas id="flare-canvas" width="170" height="170"></canvas>
+        <svg class="led-svg" viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="pinGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#475569"/>
+              <stop offset="50%" stop-color="#cbd5e1"/>
+              <stop offset="100%" stop-color="#334155"/>
+            </linearGradient>
+            <linearGradient id="anodeLeadGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#334155"/>
+              <stop offset="50%" stop-color="#94a3b8"/>
+              <stop offset="100%" stop-color="#1e293b"/>
+            </linearGradient>
+            <radialGradient id="epoxyDomeGrad" cx="50%" cy="40%" r="60%">
+              <stop id="domeStop1" offset="0%" stop-color="#22c55e" stop-opacity="0.9"/>
+              <stop id="domeStop2" offset="50%" stop-color="#16a34a" stop-opacity="0.6"/>
+              <stop id="domeStop3" offset="100%" stop-color="#14532d" stop-opacity="0.3"/>
+            </radialGradient>
+          </defs>
+          <rect x="38" y="98" width="5" height="28" fill="url(#pinGrad)" rx="1"/>
+          <rect x="57" y="98" width="5" height="28" fill="url(#pinGrad)" rx="1"/>
+          <path d="M 40 98 L 40 68 L 45 68 L 45 56 L 39 49 L 52 49 L 47 56 L 47 68 L 42 98 Z" fill="url(#anodeLeadGrad)" opacity="0.75"/>
+          <path d="M 59 98 L 59 62 L 55 58 L 55 55 L 58 55 L 61 62 L 61 98 Z" fill="url(#anodeLeadGrad)" opacity="0.75"/>
+          <path d="M 46 51 Q 52 43, 56 55" stroke="#fbbf24" stroke-width="1.2" fill="none" opacity="0.85"/>
+          <rect id="led-chip-core" x="44" y="49.5" width="4" height="3" fill="#ffffff" rx="0.5"/>
+          <path d="M 28 88 L 28 50 C 28 22, 72 22, 72 50 L 72 88 L 75 90 C 76 93, 75 96, 72 96 L 28 96 C 25 96, 24 93, 25 90 Z" fill="url(#epoxyDomeGrad)"/>
+          <path d="M 25 90 C 25 88, 75 88, 75 90 L 75 94 C 75 96, 25 96, 25 94 Z" fill="rgba(255,255,255,0.12)"/>
+          <path d="M 27 96 L 73 96" stroke="rgba(0,0,0,0.5)" stroke-width="1.5"/>
+          <path d="M 32 52 C 32 30, 48 24, 54 24 C 50 26, 36 32, 35 52 Z" fill="#ffffff" opacity="0.45"/>
+          <ellipse cx="50" cy="24" rx="6" ry="2" fill="#ffffff" opacity="0.35"/>
+          <path d="M 68 50 C 68 36, 62 28, 58 25 C 64 28, 69 36, 69 50 L 69 86 L 68 86 Z" fill="#ffffff" opacity="0.2"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- COMFORT METRICS -->
+    <div class="comfort-bar">
+      <div class="comfort-item">
+        <span class="comfort-label">????????? ??? (Heat Index)</span>
+        <div class="comfort-val"><span id="heat-val">--</span><span style="font-size:14px;color:var(--text-muted)">?C</span></div>
+        <span class="comfort-desc" id="heat-desc">?? ?????????</span>
+      </div>
+      <div class="comfort-item">
+        <span class="comfort-label">????? ???? (Dew Point)</span>
+        <div class="comfort-val"><span id="dew-val">--</span><span style="font-size:14px;color:var(--text-muted)">?C</span></div>
+        <span class="comfort-desc" id="dew-desc">--</span>
+      </div>
+      <div class="comfort-item">
+        <span class="comfort-label">???. ????????? (?/??)</span>
+        <div class="comfort-val"><span id="abs-hum-val">--</span><span style="font-size:14px;color:var(--text-muted)">?/??</span></div>
+        <span class="comfort-desc" id="abs-hum-desc">????????????</span>
+      </div>
+      <div class="comfort-item">
+        <span class="comfort-label">???? ??????? (?????????)</span>
+        <div class="comfort-val"><span id="mold-val">--</span></div>
+        <span class="comfort-desc" id="mold-desc">?????????</span>
+      </div>
+    </div>
+
+    <!-- TEMP & HUM CARDS -->
+    <div class="grid-row">
+      <div class="card">
+        <div class="card-top">
+          <span class="card-title">Температура</span>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+          </div>
+        </div>
+        <div class="val-row">
+          <span class="val-num" id="temp-val">--</span>
+          <span class="val-unit">?C</span>
+          <span class="trend-badge" id="temp-trend" title="????? ?? 1 ???">? ????.</span>
+        </div>
+        <div id="temp-badge" class="status-badge badge-ok">В норме</div>
+        <div class="graph-container" id="t-box" onmousemove="showTip(event, 't')" onmouseleave="hideTip('t')" ontouchstart="showTipTouch(event, 't')" ontouchmove="showTipTouch(event, 't')" ontouchend="hideTip('t')">
+          <div class="tooltip" id="t-tip"></div>
+          <span class="range-pill range-max" id="t-max-pill">--</span>
+          <span class="range-pill range-min" id="t-min-pill">--</span>
+          <svg class="graph-svg" viewBox="0 0 300 75" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="tGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#22c55e" stop-opacity="0.38"/>
+                <stop offset="100%" stop-color="#22c55e" stop-opacity="0.0"/>
+              </linearGradient>
+            </defs>
+            <path id="t-area" fill="url(#tGrad)" d=""></path>
+            <path id="t-line" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" d=""></path>
+          </svg>
+        </div>
+        <div class="graph-timeline">
+          <span>-24?</span><span>-18?</span><span>-12?</span><span>-6?</span><span>??????</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <span class="card-title">Влажность</span>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          </div>
+        </div>
+        <div class="val-row">
+          <span class="val-num" id="hum-val">--</span>
+          <span class="val-unit">%</span>
+          <span class="trend-badge" id="hum-trend" title="????? ?? 1 ???">? ????.</span>
+        </div>
+        <div id="hum-badge" class="status-badge badge-ok">В норме</div>
+        <div class="graph-container" id="h-box" onmousemove="showTip(event, 'h')" onmouseleave="hideTip('h')" ontouchstart="showTipTouch(event, 'h')" ontouchmove="showTipTouch(event, 'h')" ontouchend="hideTip('h')">
+          <div class="tooltip" id="h-tip"></div>
+          <span class="range-pill range-max" id="h-max-pill">--</span>
+          <span class="range-pill range-min" id="h-min-pill">--</span>
+          <svg class="graph-svg" viewBox="0 0 300 75" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="hGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.38"/>
+                <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.0"/>
+              </linearGradient>
+            </defs>
+            <path id="h-area" fill="url(#hGrad)" d=""></path>
+            <path id="h-line" fill="none" stroke="#f59e0b" stroke-width="2.5" stroke-linecap="round" d=""></path>
+          </svg>
+        </div>
+        <div class="graph-timeline">
+          <span>-24?</span><span>-18?</span><span>-12?</span><span>-6?</span><span>??????</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="settings-card">
+      <div class="settings-header" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>Параметры комфорта и светодиода</span>
+        <button class="btn-reset" onclick="resetToStandards()" title="Сбросить на ГОСТ / ВОЗ">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          <span>Стандарты ГОСТ/ВОЗ</span>
+        </button>
+      </div>
+      <div class="settings-grid">
+        <div class="setting-item">
+          <label>Температура (°C, Мин / Макс) <span class="label-hint">ГОСТ: 20–23.5</span></label>
+          <div class="inputs">
+            <input type="number" step="0.5" id="cfg-tmin">
+            <input type="number" step="0.5" id="cfg-tmax">
+          </div>
+        </div>
+        <div class="setting-item">
+          <label>Влажность (%, Мин / Макс) <span class="label-hint">ГОСТ: 40–60</span></label>
+          <div class="inputs">
+            <input type="number" step="1" id="cfg-hmin">
+            <input type="number" step="1" id="cfg-hmax">
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <label>Дневная яркость LED (%) <span class="label-hint">Дефолт: 80%</span></label>
+          <div class="slider-row">
+            <input type="range" min="0" max="100" id="cfg-bday" oninput="document.getElementById('bday-val').innerText = this.value + '%'">
+            <span class="slider-val" id="bday-val">80%</span>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <label>Ночная яркость LED (%) <span class="label-hint">Дефолт: 5%</span></label>
+          <div class="slider-row">
+            <input type="range" min="0" max="100" id="cfg-bnight" oninput="document.getElementById('bnight-val').innerText = this.value + '%'">
+            <span class="slider-val" id="bnight-val">5%</span>
+          </div>
+        </div>
+
+        <div class="setting-item">
+          <label>Ночной режим: Старт (час: 0..23) <span class="label-hint">23:00</span></label>
+          <input type="number" min="0" max="23" id="cfg-nstart">
+        </div>
+        <div class="setting-item">
+          <label>Ночной режим: Конец (час: 0..23) <span class="label-hint">07:00</span></label>
+          <input type="number" min="0" max="23" id="cfg-nend">
+        </div>
+        <div class="setting-item">
+          <label>?????????? ??????? (??????????? ?????)</label>
+          <div class="inputs">
+            <input type="number" id="cfg-toff" step="0.1" min="-5.0" max="5.0" value="0.0" title="???????? ??????????? (?C)">
+            <input type="number" id="cfg-hoff" step="0.5" min="-15.0" max="15.0" value="0.0" title="???????? ????????? (%)">
+          </div>
+        </div>
+      </div>
+      <div class="tools-row">
+        <a href="/api/export.csv" class="btn-tool" download title="??????? ???????? ??? ? Excel/CSV">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>??????? CSV (24?)</span>
+        </a>
+        <button class="btn-tool" id="btn-mute" onclick="toggleMute()" title="????????? ?????? ? Telegram">
+          <span id="mute-icon">??</span>
+          <span id="mute-text">????????? ?????? (1?)</span>
+        </button>
+      </div>
+      <button class="btn-save" onclick="saveSettings()">Сохранить настройки в память платы</button>
+    </div>
+
+    <div class="system-card">
+      <span>Wi-Fi: <b id="wifi-val">--</b> dBm</span>
+      <span>Аптайм: <b id="uptime-val">--</b> мин.</span>
+    </div>
+  </div>
+
+  <script>
+    let tPoints = [];
+    let hPoints = [];
+    let configLoaded = false;
+    let sseSource = null;
+    let lastPingStart = 0;
+
+    // THEME HANDLING
+    function changeTheme(themeName) {
+      document.body.setAttribute('data-theme', themeName);
+      localStorage.setItem('jarvis_theme', themeName);
+      const meta = document.getElementById('meta-theme-color');
+      if (themeName === 'cyberpunk') meta.content = '#0b0717';
+      else if (themeName === 'cozy') meta.content = '#16110e';
+      else if (themeName === 'fog') meta.content = '#0d0e11';
+      else if (themeName === 'oasis') meta.content = '#111a14';
+      else if (themeName === 'nordic') meta.content = '#141416';
+      else if (themeName === 'dining') meta.content = '#0d1712';
+      else if (themeName === 'viperr') meta.content = '#050805';
+      else if (themeName === 'y2k') meta.content = '#06070a';
+      else if (themeName === 'drain') meta.content = '#050912';
+      else meta.content = '#18191e';
+    }
+
+    const savedTheme = localStorage.getItem('jarvis_theme') || 'cozy';
+    document.getElementById('theme-select').value = savedTheme;
+    changeTheme(savedTheme);
+
+    // SMOOTH NUMBER INTERPOLATION (COUNTUP / ODOMETER EFFECT)
+    const animValues = {};
+
+    function animateValue(elemId, targetVal, decimals = 1, duration = 500) {
+      const elem = document.getElementById(elemId);
+      if (!elem) return;
+
+      if (animValues[elemId] === undefined) {
+        animValues[elemId] = targetVal;
+        elem.innerText = targetVal.toFixed(decimals);
+        return;
+      }
+
+      const startVal = animValues[elemId];
+      if (Math.abs(startVal - targetVal) < 0.01) {
+        elem.innerText = targetVal.toFixed(decimals);
+        return;
+      }
+
+      const startTime = performance.now();
+
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1.0);
+        const ease = 1 - Math.pow(1 - progress, 3);
+        const current = startVal + (targetVal - startVal) * ease;
+        elem.innerText = current.toFixed(decimals);
+
+        if (progress < 1.0) {
+          requestAnimationFrame(update);
+        } else {
+          animValues[elemId] = targetVal;
+          elem.innerText = targetVal.toFixed(decimals);
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    // STARBURST LED SIMULATION
+    const RAY_COUNT = 260;
+    const rayAngles = [];
+    const rayLengths = [];
+    const rayWidths = [];
+    const rayOpacities = [];
+
+    for (let i = 0; i < RAY_COUNT; i++) {
+      let angle = (i / RAY_COUNT) * Math.PI * 2 + (Math.random() - 0.5) * 0.04;
+      rayAngles.push(angle);
+      let isMainBurst = (angle > 0.4 && angle < 1.4);
+      let len = isMainBurst ? 65 + Math.random() * 85 : 30 + Math.random() * 55;
+      rayLengths.push(len);
+      rayWidths.push(0.6 + Math.random() * 1.4);
+      rayOpacities.push(0.18 + Math.random() * 0.7);
+    }
+
+    function calculateLedColor(t, tMin, tMax) {
+      let r = 0, g = 0, b = 0;
+      let status = "Оптимально", desc = "Зелёный спектр • Комфортная температура";
+
+      if (t <= 18.0) {
+        r = 0; g = 100; b = 255;
+        status = "Холодно";
+        desc = "Синий спектр • Температура ниже 18 °C";
+      } else if (t < tMin) {
+        let denom = tMin - 18.0;
+        let ratio = denom > 0.01 ? (t - 18.0) / denom : 0;
+        ratio = Math.max(0, Math.min(1, ratio));
+        r = 0;
+        g = Math.round(ratio * 255);
+        b = Math.round((1.0 - ratio) * 255);
+        status = "Прохладно";
+        desc = "Бирюзовый переход • Близко к нижней норме";
+      } else if (t <= tMax) {
+        r = 34; g = 215; b = 94;
+        status = "Идеальный баланс";
+        desc = "Зелёный спектр • В пределах заданной нормы";
+      } else if (t < 28.0) {
+        let denom = 28.0 - tMax;
+        let ratio = denom > 0.01 ? (t - tMax) / denom : 0;
+        ratio = Math.max(0, Math.min(1, ratio));
+        r = Math.round(ratio * 255);
+        g = Math.round((1.0 - ratio) * 255);
+        b = 0;
+        status = "Теплее нормы";
+        desc = "Янтарный переход • Температура растёт";
+      } else {
+        r = 239; g = 68; b = 68;
+        status = "Жарко";
+        desc = "Красный спектр • Выше порога 28 °C";
+      }
+
+      return { r, g, b, status, desc };
+    }
+
+    function drawStarburst(r, g, b, brightnessFactor) {
+      const cvs = document.getElementById('flare-canvas');
+      if (!cvs) return;
+      const ctx = cvs.getContext('2d');
+      ctx.clearRect(0, 0, cvs.width, cvs.height);
+
+      const cx = 82;
+      const cy = 68;
+      const scale = Math.max(0.08, brightnessFactor);
+
+      for (let i = 0; i < RAY_COUNT; i++) {
+        let ang = rayAngles[i];
+        let len = rayLengths[i] * scale;
+        let endX = cx + Math.cos(ang) * len;
+        let endY = cy + Math.sin(ang) * len;
+
+        let op = rayOpacities[i] * scale;
+        let grad = ctx.createLinearGradient(cx, cy, endX, endY);
+        grad.addColorStop(0, `rgba(255, 255, 255, ${op})`);
+        grad.addColorStop(0.2, `rgba(${r}, ${g}, ${b}, ${op})`);
+        grad.addColorStop(0.7, `rgba(${r}, ${g}, ${b}, ${op * 0.4})`);
+        grad.addColorStop(1, `rgba(${r}, ${g}, ${b}, 0)`);
+
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = rayWidths[i];
+        ctx.beginPath();
+        ctx.moveTo(cx, cy);
+        ctx.lineTo(endX, endY);
+        ctx.stroke();
+      }
+
+      let coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 32 * scale);
+      coreGrad.addColorStop(0, `rgba(255, 255, 255, ${scale})`);
+      coreGrad.addColorStop(0.25, `rgba(${r}, ${g}, ${b}, ${0.85 * scale})`);
+      coreGrad.addColorStop(0.65, `rgba(${r}, ${g}, ${b}, ${0.3 * scale})`);
+      coreGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+
+      ctx.fillStyle = coreGrad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, 32 * scale, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function renderVirtualLed(t, tMin, tMax, curBrightness) {
+      const led = calculateLedColor(t, tMin, tMax);
+      const bFactor = (curBrightness || 100) / 100.0;
+      const rgb = `${led.r}, ${led.g}, ${led.b}`;
+
+      drawStarburst(led.r, led.g, led.b, bFactor);
+
+      document.getElementById('domeStop1').setAttribute('stop-color', `rgb(${rgb})`);
+      document.getElementById('domeStop2').setAttribute('stop-color', `rgb(${Math.round(led.r*0.75)}, ${Math.round(led.g*0.75)}, ${Math.round(led.b*0.75)})`);
+      document.getElementById('domeStop3').setAttribute('stop-color', `rgb(${Math.round(led.r*0.25)}, ${Math.round(led.g*0.25)}, ${Math.round(led.b*0.25)})`);
+
+      const statusText = document.getElementById('led-status-text');
+      statusText.innerText = led.status;
+      statusText.style.color = `rgb(${rgb})`;
+      document.getElementById('led-desc-text').innerText = led.desc;
+    }
+
+    function buildSmoothPath(arr, width, height) {
+      if (!arr || arr.length === 0) return { line: "", area: "" };
+      let min = Math.min(...arr);
+      let max = Math.max(...arr);
+      if (max === min) { max += 0.5; min -= 0.5; }
+      
+      const stepX = width / (arr.length - 1 || 1);
+      const points = arr.map((val, i) => {
+        let norm = (val - min) / (max - min);
+        let y = height - (norm * (height - 18) + 9);
+        return { x: i * stepX, y: y };
+      });
+
+      let d = `M ${points[0].x} ${points[0].y}`;
+      for (let i = 0; i < points.length - 1; i++) {
+        let p0 = points[i];
+        let p1 = points[i + 1];
+        let mx = (p0.x + p1.x) / 2;
+        d += ` C ${mx} ${p0.y}, ${mx} ${p1.y}, ${p1.x} ${p1.y}`;
+      }
+
+      let area = d + ` L ${points[points.length-1].x} ${height} L 0 ${height} Z`;
+      return { line: d, area: area };
+    }
+
+    // UPDATE UI FROM DATA WITH SMOOTH ANIMATIONS
+    function applyData(data) {
+      tPoints = data.tHist.length ? data.tHist : [data.t];
+      hPoints = data.hHist.length ? data.hHist : [data.h];
+
+      // Smooth countup animations for metrics
+      animateValue('temp-val', data.t, 1);
+      animateValue('hum-val', data.h, 1);
+      animateValue('heat-val', data.heatIndex, 1);
+      animateValue('dew-val', data.dewPoint, 1);
+      if (data.absHum !== undefined) animateValue('abs-hum-val', data.absHum, 1);
+      if (data.moldRisk) document.getElementById('mold-val').innerText = data.moldRisk;
+      if (data.tTrend) document.getElementById('temp-trend').innerText = data.tTrend;
+      if (data.hTrend) document.getElementById('hum-trend').innerText = data.hTrend;
+
+      const mText = document.getElementById('mute-text');
+      const mIcon = document.getElementById('mute-icon');
+      if (mText && mIcon) {
+        if (data.isMuted) {
+          mText.innerText = "?????? ????????? (???.)";
+          mIcon.innerText = "??";
+        } else {
+          mText.innerText = "????????? ?????? (1?)";
+          mIcon.innerText = "??";
+        }
+      }
+
+
+      document.getElementById('wifi-val').innerText = data.rssi;
+      document.getElementById('uptime-val').innerText = data.uptime;
+      document.getElementById('clock-val').innerText = data.time || "--:--:--";
+      document.getElementById('dew-desc').innerText = data.dewDesc;
+
+      document.getElementById('mode-badge').innerText = data.isNight ? "🌙 Ночь" : "☀️ День";
+      document.getElementById('bright-badge').innerText = "Яркость: " + data.curB + "%";
+
+      if (data.sensor) {
+        const sBadge = document.getElementById('sensor-badge');
+        if (sBadge) {
+          sBadge.innerText = data.sensor.indexOf('SHT') !== -1 ? '🟢 ' + data.sensor : '🔵 ' + data.sensor;
+        }
+      }
+      if (data.sseCount !== undefined) {
+        const cBadge = document.getElementById('clients-badge');
+        if (cBadge) {
+          cBadge.innerText = '👥 ' + data.sseCount + (data.sseCount > 1 ? ' клиента' : ' клиент');
+        }
+      }
+
+      if (!configLoaded) {
+        document.getElementById('cfg-tmin').value = data.cfgTMin;
+        document.getElementById('cfg-tmax').value = data.cfgTMax;
+        document.getElementById('cfg-hmin').value = data.cfgHMin;
+        document.getElementById('cfg-hmax').value = data.cfgHMax;
+
+        document.getElementById('cfg-bday').value = data.bDay;
+        document.getElementById('bday-val').innerText = data.bDay + "%";
+
+        document.getElementById('cfg-bnight').value = data.bNight;
+        document.getElementById('bnight-val').innerText = data.bNight + "%";
+
+        document.getElementById('cfg-nstart').value = data.nStart;
+        document.getElementById('cfg-nend').value = data.nEnd;
+        document.getElementById('cfg-toff').value = (data.tOff !== undefined) ? data.tOff : 0.0;
+        document.getElementById('cfg-hoff').value = (data.hOff !== undefined) ? data.hOff : 0.0;
+        configLoaded = true;
+      }
+
+      const tMin = Math.min(...tPoints);
+      const tMax = Math.max(...tPoints);
+      document.getElementById('t-min-pill').innerText = tMin.toFixed(1);
+      document.getElementById('t-max-pill').innerText = tMax.toFixed(1);
+
+      const hMin = Math.min(...hPoints);
+      const hMax = Math.max(...hPoints);
+      document.getElementById('h-min-pill').innerText = hMin.toFixed(1);
+      document.getElementById('h-max-pill').innerText = hMax.toFixed(1);
+
+      const tBadge = document.getElementById('temp-badge');
+      if (data.t >= data.cfgTMin && data.t <= data.cfgTMax) {
+        tBadge.className = "status-badge badge-ok";
+        tBadge.innerText = "В норме";
+      } else {
+        tBadge.className = "status-badge badge-warn";
+        tBadge.innerText = data.t < data.cfgTMin ? "Ниже нормы" : "Выше нормы";
+      }
+
+      const hBadge = document.getElementById('hum-badge');
+      const dp = data.dewPoint;
+
+      if (data.h < data.cfgHMin) {
+        hBadge.className = "status-badge badge-warn";
+        hBadge.innerText = (dp < 5.0) ? "Сухо (Тр низкая)" : "Сухо";
+      } else if (data.h > data.cfgHMax) {
+        hBadge.className = "status-badge badge-warn";
+        hBadge.innerText = (dp >= 18.0) ? "Душно (Сауна)" : "Влажно";
+      } else {
+        // Влажность по % в норме, но проверяем духоту по точке росы
+        if (dp >= 16.0) {
+          hBadge.className = "status-badge badge-warn";
+          hBadge.innerText = "Душновато";
+        } else {
+          hBadge.className = "status-badge badge-ok";
+          hBadge.innerText = "В норме";
+        }
+      }
+
+      const tPaths = buildSmoothPath(tPoints, 300, 75);
+      document.getElementById('t-line').setAttribute('d', tPaths.line);
+      document.getElementById('t-area').setAttribute('d', tPaths.area);
+
+      const hPaths = buildSmoothPath(hPoints, 300, 75);
+      document.getElementById('h-line').setAttribute('d', hPaths.line);
+      document.getElementById('h-area').setAttribute('d', hPaths.area);
+
+      renderVirtualLed(data.t, data.cfgTMin, data.cfgTMax, data.curB);
+    }
+
+    // UPDATE PING STATUS BADGE
+    function updatePingBadge(status, text) {
+      const badge = document.getElementById('conn-badge');
+      const pingText = document.getElementById('ping-text');
+      badge.className = 'conn-badge ' + status;
+      pingText.innerText = text;
+    }
+
+    // INITIAL FETCH WITH RTT MEASUREMENT
+    async function initialFetch() {
+      const start = performance.now();
+      try {
+        const res = await fetch('/api/data');
+        const rtt = Math.round(performance.now() - start);
+        const data = await res.json();
+        applyData(data);
+        updatePingBadge('online', `Онлайн (${rtt} мс)`);
+      } catch (e) {
+        console.error("Initial fetch error:", e);
+        updatePingBadge('offline', 'Офлайн');
+      }
+    }
+
+    // REALTIME SSE CONNECTION WITH HEARTBEAT
+    function connectSSE() {
+      if (window.EventSource) {
+        updatePingBadge('connecting', 'Синхронизация...');
+        lastPingStart = performance.now();
+
+        sseSource = new EventSource('/api/events');
+        sseSource.onmessage = (event) => {
+          try {
+            const rtt = Math.max(1, Math.round(performance.now() - lastPingStart));
+            const data = JSON.parse(event.data);
+            applyData(data);
+            updatePingBadge('online', `Онлайн (${rtt} мс)`);
+            lastPingStart = performance.now();
+          } catch(err) {
+            console.error("SSE parse error:", err);
+          }
+        };
+        sseSource.onerror = (err) => {
+          console.warn("SSE connection lost, reconnecting in 5s...", err);
+          updatePingBadge('offline', 'Переподключение...');
+          sseSource.close();
+          setTimeout(connectSSE, 5000);
+        };
+      } else {
+        setInterval(initialFetch, 3000);
+      }
+    }
+
+    function showTip(e, type) {
+      const box = document.getElementById(type + '-box');
+      const tip = document.getElementById(type + '-tip');
+      const pts = type === 't' ? tPoints : hPoints;
+      if (!pts || pts.length === 0) return;
+
+      const rect = box.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const idx = Math.min(Math.max(Math.round((x / rect.width) * (pts.length - 1)), 0), pts.length - 1);
+      
+      const val = pts[idx].toFixed(1) + (type === 't' ? ' °C' : ' %');
+      const minsAgo = Math.round((pts.length - 1 - idx) * 5);
+      
+      tip.innerText = `${val} (${minsAgo === 0 ? 'сейчас' : minsAgo + ' мин. назад'})`;
+      tip.style.left = x + 'px';
+      tip.style.top = '25px';
+      tip.style.opacity = '1';
+    }
+
+    function showTipTouch(e, type) {
+      if (e.touches && e.touches.length > 0) {
+        showTip({ clientX: e.touches[0].clientX }, type);
+      }
+    }
+
+    function hideTip(type) {
+      document.getElementById(type + '-tip').style.opacity = '0';
+    }
+
+    function resetToStandards() {
+      document.getElementById('cfg-tmin').value = 20.0;
+      document.getElementById('cfg-tmax').value = 23.5;
+      document.getElementById('cfg-hmin').value = 40;
+      document.getElementById('cfg-hmax').value = 60;
+      document.getElementById('cfg-bday').value = 80;
+      document.getElementById('bday-val').innerText = '80%';
+      document.getElementById('cfg-bnight').value = 5;
+      document.getElementById('bnight-val').innerText = '5%';
+      document.getElementById('cfg-nstart').value = 23;
+      document.getElementById('cfg-nend').value = 7;
+    }
+
+    async function saveSettings() {
+      const payload = {
+        tMin: parseFloat(document.getElementById('cfg-tmin').value),
+        tMax: parseFloat(document.getElementById('cfg-tmax').value),
+        hMin: parseFloat(document.getElementById('cfg-hmin').value),
+        hMax: parseFloat(document.getElementById('cfg-hmax').value),
+        bDay: parseInt(document.getElementById('cfg-bday').value),
+        bNight: parseInt(document.getElementById('cfg-bnight').value),
+        nStart: parseInt(document.getElementById('cfg-nstart').value),
+        nEnd: parseInt(document.getElementById('cfg-nend').value),
+        tOff: parseFloat(document.getElementById('cfg-toff').value) || 0.0,
+        hOff: parseFloat(document.getElementById('cfg-hoff').value) || 0.0
+      };
+
+      if (payload.tMin >= payload.tMax || payload.hMin >= payload.hMax) {
+        alert("Ошибка: Минимальное значение должно быть строго меньше максимального!");
+        return;
+      }
+
+      const res = await fetch('/api/save', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+      if (res.ok) {
+        alert('Настройки и яркость сохранены в память ESP32!');
+        initialFetch();
+      } else {
+        alert('Ошибка при сохранении настроек!');
+      }
+    }
+
+    
+    let currentlyMuted = false;
+    async function toggleMute() {
+      const endpoint = currentlyMuted ? '/api/unmute' : '/api/mute';
+      try {
+        await fetch(endpoint, { method: 'POST' });
+        currentlyMuted = !currentlyMuted;
+        const mText = document.getElementById('mute-text');
+        const mIcon = document.getElementById('mute-icon');
+        if (currentlyMuted) {
+          mText.innerText = "?????? ????????? (???.)";
+          mIcon.innerText = "??";
+          alert("?????? ? Telegram ????????? ?? 1 ???.");
+        } else {
+          mText.innerText = "????????? ?????? (1?)";
+          mIcon.innerText = "??";
+          alert("?????? ? Telegram ????? ???????.");
+        }
+      } catch (err) {
+        console.error("Mute error:", err);
+      }
+    }
+
+    async function sendTg() {
+      await fetch('/api/send_tg');
+      alert('Отчёт отправлен в Telegram!');
+    }
+
+    initialFetch();
+    connectSSE();
+  </script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+# Arduino & Build artifacts
+*.hex
+*.elf
+*.bin
+build/
+.pio/
+.theia/
+.vscode/
+.idea/
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.tmp
+*.bak
+
+# Unused theme archives & test assets
+themes/archive/
+
+# Sensitive credentials (пароли от Wi-Fi и токен бота)
+config.h
