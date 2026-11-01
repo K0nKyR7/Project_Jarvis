@@ -152,6 +152,10 @@ float humHistory[HISTORY_SIZE];
 int   historyIndex = 0;
 bool  historyFull  = false;
 unsigned long lastHistorySave = 0;
+// Флаги оптимизации работы с памятью и SSE Delta Push
+bool historyDirty = false;
+bool historyUpdatedForSse = false;
+
 
 // ========== МАТЕМАТИКА: ТОЧКА РОСЫ И HEAT INDEX ==========
 
@@ -426,6 +430,8 @@ void updateStats(float t, float h) {
             historyFull = true;
         }
         lastHistorySave = millis();
+        historyDirty = true;
+        historyUpdatedForSse = true;
     }
 }
 

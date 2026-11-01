@@ -1856,8 +1856,22 @@
 
     // UPDATE UI FROM DATA WITH SMOOTH ANIMATIONS
     function applyData(data) {
-      tPoints = (data.tHist && data.tHist.length) ? data.tHist : [data.t];
-      hPoints = (data.hHist && data.hHist.length) ? data.hHist : [data.h];
+      let historyChanged = false;
+      if (data.tHist && data.tHist.length) {
+        tPoints = data.tHist;
+        historyChanged = true;
+      } else if (!tPoints || tPoints.length === 0) {
+        tPoints = [data.t];
+        historyChanged = true;
+      }
+
+      if (data.hHist && data.hHist.length) {
+        hPoints = data.hHist;
+        historyChanged = true;
+      } else if (!hPoints || hPoints.length === 0) {
+        hPoints = [data.h];
+        historyChanged = true;
+      }
 
       // Smooth countup animations for metrics
       animateValue('temp-val', data.t, 1);
@@ -1986,13 +2000,15 @@
         }
       }
 
-      const tPaths = buildSmoothPath(tPoints, 300, 75);
-      document.getElementById('t-line').setAttribute('d', tPaths.line);
-      document.getElementById('t-area').setAttribute('d', tPaths.area);
+      if (historyChanged || !document.getElementById('t-line').getAttribute('d')) {
+        const tPaths = buildSmoothPath(tPoints, 300, 75);
+        document.getElementById('t-line').setAttribute('d', tPaths.line);
+        document.getElementById('t-area').setAttribute('d', tPaths.area);
 
-      const hPaths = buildSmoothPath(hPoints, 300, 75);
-      document.getElementById('h-line').setAttribute('d', hPaths.line);
-      document.getElementById('h-area').setAttribute('d', hPaths.area);
+        const hPaths = buildSmoothPath(hPoints, 300, 75);
+        document.getElementById('h-line').setAttribute('d', hPaths.line);
+        document.getElementById('h-area').setAttribute('d', hPaths.area);
+      }
 
       renderVirtualLed(data.t, data.cfgTMin, data.cfgTMax, data.curB);
     }

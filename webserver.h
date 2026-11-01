@@ -13,6 +13,8 @@
 #include "themes/y2k_jpg.h"
 #include "themes/drain_jpg.h"
 
+extern bool historyUpdatedForSse;
+
 // ========== REALTIME MULTI-CLIENT SSE POOL ==========
 WiFiClient sseClients[MAX_SSE_CLIENTS];
 unsigned long lastSsePush = 0;
@@ -220,10 +222,10 @@ void handleUpdateUpload(WebServer &server) {
     }
 }
 
-// ========== СБОРКА JSON ДАННЫХ (ОБЩАЯ) ==========
+// ========== СБОРКА JSON ДАННЫХ (ОБЩАЯ С ПОДДЕРЖКОЙ DELTA PUSH) ==========
 
-void buildDataJson(String &output) {
-    StaticJsonDocument<2048> doc;
+template<typename TDoc>
+static void populateScalarMetrics(TDoc &doc) {
     doc["t"] = isnan(cachedTemp) ? 0.0f : cachedTemp;
     doc["h"] = isnan(cachedHum)  ? 0.0f : cachedHum;
     doc["minT"] = minTemp > 900  ? cachedTemp : minTemp;
@@ -275,22 +277,35 @@ void buildDataJson(String &output) {
 
     doc["sensor"]  = getSensorModelName();
     doc["sseCount"] = getActiveSseCount();
+}
 
-    JsonArray tArr = doc.createNestedArray("tHist");
-    JsonArray hArr = doc.createNestedArray("hHist");
+void buildDataJson(String &output, bool includeHistory = true) {
+    if (includeHistory) {
+        StaticJsonDocument<2048> doc;
+        populateScalarMetrics(doc);
 
-    // Интеллектуальное прореживание для графика 24ч (держит JSON легким и быстрым)
-    int count = historyFull ? HISTORY_SIZE : historyIndex;
-    int start = historyFull ? historyIndex : 0;
-    int step = (count > 96) ? (count / 96) : 1;
-    for (int i = 0; i < count; i += step) {
-        int idx = (start + i) % HISTORY_SIZE;
-        tArr.add(round(tempHistory[idx] * 10.0f) / 10.0f);
-        hArr.add(round(humHistory[idx] * 10.0f) / 10.0f);
+        JsonArray tArr = doc.createNestedArray("tHist");
+        JsonArray hArr = doc.createNestedArray("hHist");
+
+        // Интеллектуальное прореживание для графика 24ч (держит JSON легким и быстрым)
+        int count = historyFull ? HISTORY_SIZE : historyIndex;
+        int start = historyFull ? historyIndex : 0;
+        int step = (count > 96) ? (count / 96) : 1;
+        for (int i = 0; i < count; i += step) {
+            int idx = (start + i) % HISTORY_SIZE;
+            tArr.add(round(tempHistory[idx] * 10.0f) / 10.0f);
+            hArr.add(round(humHistory[idx] * 10.0f) / 10.0f);
+        }
+
+        output.reserve(measureJson(doc) + 1);
+        serializeJson(doc, output);
+    } else {
+        // Ультра-быстрый легкий JSON (~250 байт) для 2-секундных SSE тиков
+        StaticJsonDocument<512> doc;
+        populateScalarMetrics(doc);
+        output.reserve(measureJson(doc) + 1);
+        serializeJson(doc, output);
     }
-
-    output.reserve(measureJson(doc) + 1);
-    serializeJson(doc, output);
 }
 
 // ========== API: DATA (REST FALLBACK) ==========
@@ -343,9 +358,15 @@ void handleSseLoop() {
 
     if (getActiveSseCount() == 0) return;
 
+    // Передаем полную историю только если добавилась новая точка (~раз в 5 мин)
+    bool sendFullHistory = historyUpdatedForSse;
     String json;
-    buildDataJson(json);
+    buildDataJson(json, sendFullHistory);
     broadcastSse(json);
+
+    if (sendFullHistory) {
+        historyUpdatedForSse = false;
+    }
     lastSsePush = millis();
 }
 
@@ -395,7 +416,7 @@ void handleApiSave(WebServer &server, Preferences &prefs) {
 
     // Мгновенно пушим новые настройки всем клиентам SSE
     String json;
-    buildDataJson(json);
+    buildDataJson(json, false);
     broadcastSse(json);
 }
 

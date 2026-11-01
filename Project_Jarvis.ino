@@ -46,7 +46,8 @@ unsigned long lastTimeAutoSend    = 0;
 unsigned long lastTimeAlertCheck   = 0;
 unsigned long lastWifiCheck       = 0;
 unsigned long lastHistoryPersist   = 0;
-const unsigned long historyPersistInterval = 600000UL; // Сохранение истории в NVS каждые 10 мин
+const unsigned long historyPersistInterval = 1800000UL; // Сохранение истории в NVS каждые 30 мин
+extern bool historyDirty;
 
 // ========== ФОНОВАЯ ЗАДАЧА FREERTOS ДЛЯ TELEGRAM-БОТА ==========
 // Работает полностью независимо: задержки HTTPS не влияют на веб-сервер и датчик!
@@ -82,6 +83,10 @@ void setup() {
     Serial.println("\n=============================");
     Serial.println("  Project Jarvis v2.4 Hardened");
     Serial.println("=============================");
+
+    // ⚡ ЭНЕРГОЭФФЕКТИВНОСТЬ: Оптимизация частоты ядра до 80 МГц (снижает нагрев платы на 3-4°C)
+    setCpuFrequencyMhz(80);
+    Serial.printf("CPU frequency set to %u MHz (chip cooling active)\n", getCpuFrequencyMhz());
 
     // Инициализация рекурсивного мьютекса потокобезопасности
     botMutex = xSemaphoreCreateRecursiveMutex();
@@ -275,9 +280,12 @@ void loop() {
         }
     }
 
-    // 8. Сохранение истории в NVS каждые 10 мин
+    // 8. Сохранение истории в NVS каждые 30 мин (только при наличии изменений)
     if (millis() - lastHistoryPersist > historyPersistInterval) {
-        saveHistory(prefs);
+        if (historyDirty) {
+            saveHistory(prefs);
+            historyDirty = false;
+        }
         lastHistoryPersist = millis();
     }
 }
