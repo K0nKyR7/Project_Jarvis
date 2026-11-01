@@ -8,18 +8,18 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Климат">
   <link rel="manifest" href="/manifest.json">
-  <title>Климат Квартира</title>
+  <title>Климат Квартира • Jarvis</title>
   <style>
     :root {
       /* Theme 1: Midnight Slate (Default) */
       --bg-body: #090a0d;
-      --bg-card: #18191e;
-      --bg-card-hover: #1c1e24;
-      --bg-led-card: #121318;
-      --bg-input: #0f1013;
-      --border-color: #23252b;
-      --border-color-hover: #38bdf844;
-      --border-led: #1f2128;
+      --bg-card: rgba(24, 25, 30, 0.72);
+      --bg-card-hover: rgba(28, 30, 36, 0.82);
+      --bg-led-card: rgba(18, 19, 24, 0.78);
+      --bg-input: rgba(15, 16, 19, 0.75);
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-color-hover: rgba(56, 189, 248, 0.35);
+      --border-led: rgba(255, 255, 255, 0.08);
       --text-main: #e2e8f0;
       --text-heading: #ffffff;
       --text-muted: #71717a;
@@ -28,15 +28,19 @@
       --accent-glow: rgba(56, 189, 248, 0.25);
       --accent-btn: #0284c7;
       --accent-btn-hover: #0369a1;
-      --badge-bg: #1e293b;
-      --badge-border: #334155;
-      --card-shadow: 0 8px 20px rgba(0,0,0,0.35);
-      --card-shadow-hover: 0 14px 30px rgba(0,0,0,0.55), 0 0 15px rgba(56, 189, 248, 0.12);
-      --led-shadow: 0 12px 32px rgba(0,0,0,0.5);
-      --led-shadow-hover: 0 16px 40px rgba(0,0,0,0.65), 0 0 25px rgba(56, 189, 248, 0.15);
+      --card-radius: 18px;
+      --card-shine: inset 0 1px 0 0 rgba(255, 255, 255, 0.12);
+      --card-shadow: 0 12px 36px -4px rgba(0, 0, 0, 0.55), 0 2px 6px rgba(0, 0, 0, 0.3);
+      --badge-bg: rgba(30, 41, 59, 0.65);
+      --badge-border: rgba(255, 255, 255, 0.1);
+      --badge-text: #cbd5e1;
+      --led-glow-primary: #22c55e;
+      --led-shadow-hover: 0 16px 40px rgba(34, 197, 94, 0.25);
+      --track-bg: rgba(255, 255, 255, 0.08);
     }
 
-    body[data-theme="cyberpunk"] {
+    /* 10 IMMERSIVE THEMES */
+    [data-theme="cyberpunk"] {
       /* Theme 2: Cyberpunk Neon */
       --bg-body: #0b0717;
       --bg-card: #150d2b;
@@ -62,8 +66,7 @@
       --led-shadow-hover: 0 16px 42px rgba(0,240,255,0.35);
     }
 
-    /* Theme: Уютная гостиная / Тёплый дом */
-    body[data-theme="cozy"] {
+    [data-theme="cozy"] {
       --bg-body: #16110e;
       --bg-card: rgba(32, 24, 20, 0.78);
       --bg-card-hover: rgba(45, 34, 28, 0.88);
@@ -87,12 +90,17 @@
       --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.7), 0 0 28px rgba(245, 158, 11, 0.22);
       --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 38px rgba(245, 158, 11, 0.42);
     }
-    body[data-theme="cozy"] {
+
+    [data-theme="cozy"] {
       background: linear-gradient(rgba(22, 17, 14, 0.45), rgba(22, 17, 14, 0.62)), url('cozy.jpg') no-repeat center center fixed;
       background-size: cover;
     }
-    body[data-theme="cozy"] .card,
+
+    [data-theme="cozy"] .card,
+    body[data-theme] .comfort-item,
+    body[data-theme] .header,
     body[data-theme="cozy"] .led-card,
+    body[data-theme] .hero-halo-card,
     body[data-theme="cozy"] .comfort-bar,
     body[data-theme="cozy"] .settings-card,
     body[data-theme="cozy"] .system-card {
@@ -100,8 +108,7 @@
       -webkit-backdrop-filter: blur(14px);
     }
 
-    /* Theme: Туманный Нуар (Ночная туманная дорога, мягкий свет фонарей, кинематографичный монохром) */
-    body[data-theme="fog"] {
+    [data-theme="fog"] {
       --bg-body: #0d0e11;
       --bg-card: rgba(18, 20, 24, 0.72);
       --bg-card-hover: rgba(26, 29, 36, 0.82);
@@ -125,12 +132,17 @@
       --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.7), 0 0 26px rgba(255, 255, 255, 0.1);
       --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 36px rgba(255, 255, 255, 0.25);
     }
-    body[data-theme="fog"] {
+
+    [data-theme="fog"] {
       background: linear-gradient(rgba(10, 11, 14, 0.38), rgba(10, 11, 14, 0.52)), url('fog.jpg') no-repeat center center fixed;
       background-size: cover;
     }
-    body[data-theme="fog"] .card,
+
+    [data-theme="fog"] .card,
+    body[data-theme] .comfort-item,
+    body[data-theme] .header,
     body[data-theme="fog"] .led-card,
+    body[data-theme] .hero-halo-card,
     body[data-theme="fog"] .comfort-bar,
     body[data-theme="fog"] .settings-card,
     body[data-theme="fog"] .system-card {
@@ -138,8 +150,7 @@
       -webkit-backdrop-filter: blur(14px);
     }
 
-    /* Theme: Зелёный оазис и ротанг */
-    body[data-theme="oasis"] {
+    [data-theme="oasis"] {
       --bg-body: #111a14;
       --bg-card: rgba(22, 34, 26, 0.78);
       --bg-card-hover: rgba(30, 48, 36, 0.88);
@@ -163,12 +174,17 @@
       --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.7), 0 0 28px rgba(16, 185, 129, 0.22);
       --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 38px rgba(16, 185, 129, 0.42);
     }
-    body[data-theme="oasis"] {
+
+    [data-theme="oasis"] {
       background: linear-gradient(rgba(18, 26, 20, 0.44), rgba(18, 26, 20, 0.62)), url('oasis.jpg') no-repeat center center fixed;
       background-size: cover;
     }
-    body[data-theme="oasis"] .card,
+
+    [data-theme="oasis"] .card,
+    body[data-theme] .comfort-item,
+    body[data-theme] .header,
     body[data-theme="oasis"] .led-card,
+    body[data-theme] .hero-halo-card,
     body[data-theme="oasis"] .comfort-bar,
     body[data-theme="oasis"] .settings-card,
     body[data-theme="oasis"] .system-card {
@@ -176,8 +192,7 @@
       -webkit-backdrop-filter: blur(14px);
     }
 
-    /* Theme: Сканди-минимализм / Жёлтое кресло */
-    body[data-theme="nordic"] {
+    [data-theme="nordic"] {
       --bg-body: #141416;
       --bg-card: rgba(26, 26, 30, 0.8);
       --bg-card-hover: rgba(36, 36, 42, 0.9);
@@ -201,12 +216,17 @@
       --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.7), 0 0 28px rgba(234, 179, 8, 0.22);
       --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 38px rgba(234, 179, 8, 0.42);
     }
-    body[data-theme="nordic"] {
+
+    [data-theme="nordic"] {
       background: linear-gradient(rgba(20, 20, 22, 0.45), rgba(20, 20, 22, 0.62)), url('nordic.jpg') no-repeat center center fixed;
       background-size: cover;
     }
-    body[data-theme="nordic"] .card,
+
+    [data-theme="nordic"] .card,
+    body[data-theme] .comfort-item,
+    body[data-theme] .header,
     body[data-theme="nordic"] .led-card,
+    body[data-theme] .hero-halo-card,
     body[data-theme="nordic"] .comfort-bar,
     body[data-theme="nordic"] .settings-card,
     body[data-theme="nordic"] .system-card {
@@ -214,8 +234,7 @@
       -webkit-backdrop-filter: blur(14px);
     }
 
-    /* Theme: Латунь и изумрудный бархат */
-    body[data-theme="dining"] {
+    [data-theme="dining"] {
       --bg-body: #0d1712;
       --bg-card: rgba(16, 30, 24, 0.78);
       --bg-card-hover: rgba(24, 42, 34, 0.88);
@@ -239,12 +258,17 @@
       --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.7), 0 0 28px rgba(5, 150, 105, 0.22);
       --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.85), 0 0 38px rgba(5, 150, 105, 0.42);
     }
-    body[data-theme="dining"] {
+
+    [data-theme="dining"] {
       background: linear-gradient(rgba(12, 22, 18, 0.45), rgba(12, 22, 18, 0.62)), url('dining.jpg') no-repeat center center fixed;
       background-size: cover;
     }
-    body[data-theme="dining"] .card,
+
+    [data-theme="dining"] .card,
+    body[data-theme] .comfort-item,
+    body[data-theme] .header,
     body[data-theme="dining"] .led-card,
+    body[data-theme] .hero-halo-card,
     body[data-theme="dining"] .comfort-bar,
     body[data-theme="dining"] .settings-card,
     body[data-theme="dining"] .system-card {
@@ -252,8 +276,7 @@
       -webkit-backdrop-filter: blur(14px);
     }
 
-    /* Theme: VIPERR / Toxic Cyber Goth */
-    body[data-theme="viperr"] {
+    [data-theme="viperr"] {
       --bg-body: #050805;
       --bg-card: rgba(8, 14, 9, 0.82);
       --bg-card-hover: rgba(12, 22, 14, 0.92);
@@ -277,12 +300,17 @@
       --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.9), 0 0 28px rgba(34, 197, 94, 0.28);
       --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.95), 0 0 40px rgba(34, 197, 94, 0.55);
     }
-    body[data-theme="viperr"] {
+
+    [data-theme="viperr"] {
       background: linear-gradient(rgba(5, 8, 5, 0.45), rgba(5, 8, 5, 0.65)), url('viperr.jpg') no-repeat center center fixed;
       background-size: cover;
     }
-    body[data-theme="viperr"] .card,
+
+    [data-theme="viperr"] .card,
+    body[data-theme] .comfort-item,
+    body[data-theme] .header,
     body[data-theme="viperr"] .led-card,
+    body[data-theme] .hero-halo-card,
     body[data-theme="viperr"] .comfort-bar,
     body[data-theme="viperr"] .settings-card,
     body[data-theme="viperr"] .system-card {
@@ -290,8 +318,7 @@
       -webkit-backdrop-filter: blur(14px);
     }
 
-    /* Theme: Y2K Chrome / Cyber Sigilism */
-    body[data-theme="y2k"] {
+    [data-theme="y2k"] {
       --bg-body: #06070a;
       --bg-card: rgba(14, 16, 24, 0.82);
       --bg-card-hover: rgba(22, 26, 38, 0.92);
@@ -315,12 +342,17 @@
       --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.9), 0 0 28px rgba(255, 255, 255, 0.2);
       --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.95), 0 0 40px rgba(255, 255, 255, 0.45);
     }
-    body[data-theme="y2k"] {
+
+    [data-theme="y2k"] {
       background: linear-gradient(rgba(6, 7, 10, 0.45), rgba(6, 7, 10, 0.65)), url('y2k.jpg') no-repeat center center fixed;
       background-size: cover;
     }
-    body[data-theme="y2k"] .card,
+
+    [data-theme="y2k"] .card,
+    body[data-theme] .comfort-item,
+    body[data-theme] .header,
     body[data-theme="y2k"] .led-card,
+    body[data-theme] .hero-halo-card,
     body[data-theme="y2k"] .comfort-bar,
     body[data-theme="y2k"] .settings-card,
     body[data-theme="y2k"] .system-card {
@@ -328,8 +360,7 @@
       -webkit-backdrop-filter: blur(14px);
     }
 
-    /* Theme: DRAIN / Icy Webcore */
-    body[data-theme="drain"] {
+    [data-theme="drain"] {
       --bg-body: #050912;
       --bg-card: rgba(10, 16, 28, 0.82);
       --bg-card-hover: rgba(16, 26, 44, 0.92);
@@ -353,12 +384,17 @@
       --led-shadow: 0 12px 34px rgba(0, 0, 0, 0.9), 0 0 28px rgba(56, 189, 248, 0.28);
       --led-shadow-hover: 0 16px 44px rgba(0, 0, 0, 0.95), 0 0 40px rgba(56, 189, 248, 0.55);
     }
-    body[data-theme="drain"] {
+
+    [data-theme="drain"] {
       background: linear-gradient(rgba(5, 9, 18, 0.45), rgba(5, 9, 18, 0.65)), url('drain.jpg') no-repeat center center fixed;
       background-size: cover;
     }
-    body[data-theme="drain"] .card,
+
+    [data-theme="drain"] .card,
+    body[data-theme] .comfort-item,
+    body[data-theme] .header,
     body[data-theme="drain"] .led-card,
+    body[data-theme] .hero-halo-card,
     body[data-theme="drain"] .comfort-bar,
     body[data-theme="drain"] .settings-card,
     body[data-theme="drain"] .system-card {
@@ -366,679 +402,853 @@
       -webkit-backdrop-filter: blur(14px);
     }
 
-    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-    body {
-      margin: 0;
-      padding: max(16px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
-      background: var(--bg-body);
-      color: var(--text-main);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      display: flex;
-      justify-content: center;
-      transition: background 0.3s ease, color 0.3s ease;
-      min-height: 100vh;
+    /* BASE RESET & TYPOGRAPHY */
+    *, *::before, *::after {
       box-sizing: border-box;
       -webkit-tap-highlight-color: transparent;
     }
+    body {
+      margin: 0;
+      padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
     .container {
       width: 100%;
-      max-width: 820px;
+      max-width: 840px;
       display: flex;
       flex-direction: column;
       gap: 16px;
     }
 
-    /* Header */
+    /* HEADER */
     .header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
+      padding: 12px 18px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      box-shadow: var(--card-shine), var(--card-shadow);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      flex-wrap: wrap;
+      gap: 12px;
+      transition: all 0.3s ease;
     }
     .header-left {
       display: flex;
       flex-direction: column;
       gap: 4px;
     }
-    .header h2 { 
-      font-size: 24px; 
-      font-weight: 600; 
-      color: var(--text-heading);
-      transition: color 0.3s;
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-title h2 {
       margin: 0;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-heading);
+    }
+    .brand-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #22c55e;
+      box-shadow: 0 0 8px #22c55e;
+      display: inline-block;
+      animation: pulse 2.5s infinite ease-in-out;
     }
     .header-sub {
       display: flex;
-      flex-wrap: wrap;
       align-items: center;
-      gap: 6px;
-      font-size: 13px;
+      gap: 8px;
+      font-size: 12px;
       color: var(--text-muted);
+      flex-wrap: wrap;
     }
-    .header-actions { display: flex; gap: 8px; align-items: center; }
-
-    /* Chip Badges for Sensor & Status */
-    .chip-badge {
+    .header-sub span.dot {
+      opacity: 0.4;
+    }
+    .conn-badge {
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 3px 8px;
+      gap: 6px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 500;
+      background: rgba(34, 197, 94, 0.12);
+      border: 1px solid rgba(34, 197, 94, 0.28);
+      color: #4ade80;
+      transition: all 0.3s;
+    }
+    .conn-badge.connecting {
+      background: rgba(234, 179, 8, 0.12);
+      border-color: rgba(234, 179, 8, 0.28);
+      color: #facc15;
+    }
+    .conn-badge.offline {
+      background: rgba(239, 68, 68, 0.12);
+      border-color: rgba(239, 68, 68, 0.28);
+      color: #f87171;
+    }
+    .ping-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    .chip-badge {
+      padding: 2px 8px;
       border-radius: 12px;
       font-size: 11px;
       font-weight: 500;
       background: var(--badge-bg);
       border: 1px solid var(--badge-border);
-      color: var(--text-sub);
-      transition: all 0.25s ease;
+      color: var(--badge-text);
     }
-    .chip-badge:hover {
-      border-color: var(--accent);
-      color: var(--text-heading);
-    }
-
-    /* Connection Ping Badge */
-    .conn-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 11px;
-      font-weight: 500;
-      background: var(--badge-bg);
-      border: 1px solid var(--badge-border);
-      color: var(--text-sub);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      cursor: default;
-    }
-    .conn-badge:hover {
-      border-color: var(--accent);
-      box-shadow: 0 0 10px var(--accent-glow);
-      transform: translateY(-1px);
-    }
-    .ping-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #22c55e;
-      box-shadow: 0 0 6px #22c55e;
-      transition: background 0.3s, box-shadow 0.3s;
-    }
-    .conn-badge.connecting .ping-dot {
-      background: #eab308;
-      box-shadow: 0 0 6px #eab308;
-      animation: pulse 1s infinite;
-    }
-    .conn-badge.offline .ping-dot {
-      background: #ef4444;
-      box-shadow: 0 0 6px #ef4444;
-      animation: none;
-    }
-
-    @keyframes pulse {
-      0% { opacity: 0.5; transform: scale(0.9); }
-      50% { opacity: 1; transform: scale(1.15); }
-      100% { opacity: 0.5; transform: scale(0.9); }
-    }
-
-    /* Buttons with hover lift and glow */
-    .btn-tg {
-      background: var(--badge-bg);
-      border: 1px solid var(--badge-border);
-      color: var(--accent);
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 6px;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      gap: 10px;
     }
-    .btn-tg:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--accent);
-      box-shadow: 0 4px 14px var(--accent-glow);
-      transform: translateY(-2px);
-    }
-    .btn-tg:active { 
-      transform: scale(0.96) translateY(0); 
-    }
-
     .theme-select {
-      background: var(--bg-card);
+      background: var(--bg-input);
       border: 1px solid var(--border-color);
       color: var(--text-main);
+      padding: 7px 12px;
       border-radius: 10px;
-      padding: 8px 10px;
       font-size: 13px;
+      font-weight: 500;
       outline: none;
       cursor: pointer;
-      transition: all 0.25s ease;
+      transition: all 0.2s ease;
     }
     .theme-select:hover {
       border-color: var(--accent);
-      box-shadow: 0 0 10px var(--accent-glow);
+    }
+    .btn-tg {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-btn);
+      color: #ffffff;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.3);
+    }
+    .btn-tg:hover {
+      background: var(--accent-btn-hover);
       transform: translateY(-1px);
     }
-    .theme-select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
+    .btn-tg:active {
+      transform: translateY(0);
     }
 
-    /* LED Card with Hover Lift */
-    .led-card {
+    /* HERO CARD: AMBIENT CLIMATE HALO */
+    .hero-halo-card {
       background: var(--bg-led-card);
       border: 1px solid var(--border-led);
-      border-radius: 20px;
+      border-radius: var(--card-radius);
       padding: 20px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
-      box-shadow: var(--led-shadow);
       position: relative;
       overflow: hidden;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+      box-shadow: var(--card-shine), var(--card-shadow);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      transition: all 0.3s ease;
+      gap: 20px;
     }
-    .led-card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--led-shadow-hover);
-      border-color: var(--border-color-hover);
+    .hero-halo-card::after {
+      content: "";
+      position: absolute;
+      top: -40px;
+      right: 40px;
+      width: 220px;
+      height: 220px;
+      background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+      opacity: 0.35;
+      pointer-events: none;
+      filter: blur(30px);
     }
-    .led-info { display: flex; flex-direction: column; gap: 6px; z-index: 3; }
-    .led-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.9px; color: var(--text-muted); }
-    .led-status { font-size: 20px; font-weight: 600; color: var(--text-heading); transition: color 0.4s ease; }
-    .led-subtext { font-size: 13px; color: var(--text-sub); }
-    .led-badge-row { display: flex; gap: 8px; margin-top: 4px; }
-    .mode-badge {
-      display: inline-block;
-      padding: 2px 8px;
-      border-radius: 6px;
+    .hero-info {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      z-index: 2;
+    }
+    .hero-overline {
       font-size: 11px;
-      font-weight: 500;
-      background: var(--badge-bg);
-      color: var(--text-sub);
-      border: 1px solid var(--badge-border);
-      transition: all 0.25s ease;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
-    .mode-badge:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: scale(1.05);
+    .hero-status {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #22c55e;
+      transition: color 0.4s ease;
+      text-shadow: 0 0 20px currentColor;
+    }
+    .hero-desc {
+      font-size: 13px;
+      color: var(--text-sub);
+      max-width: 380px;
+      line-height: 1.45;
+    }
+    .hero-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .mode-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 12px;
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      color: var(--badge-text);
     }
 
-    .led-viewport {
-      width: 170px;
-      height: 170px;
+    /* HALO ORB & VIRTUAL LED VIEWPORT */
+    .halo-viewport {
+      position: relative;
+      width: 130px;
+      height: 130px;
       display: flex;
       align-items: center;
       justify-content: center;
-      position: relative;
       flex-shrink: 0;
-      transition: transform 0.3s ease;
+      z-index: 2;
     }
-    .led-card:hover .led-viewport {
-      transform: scale(1.04);
+    .halo-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 0 20px rgba(34, 197, 94, 0.2), 0 0 25px rgba(34, 197, 94, 0.25);
+      animation: ringBreathe 4s infinite ease-in-out;
+      pointer-events: none;
+      transition: box-shadow 0.5s ease, border-color 0.5s ease;
+    }
+    @keyframes ringBreathe {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50% { transform: scale(1.04); opacity: 1; }
     }
     #flare-canvas {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 170px;
-      height: 170px;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 140px;
+      height: 140px;
       pointer-events: none;
       z-index: 1;
-      mix-blend-mode: screen;
     }
     .led-svg {
-      width: 86px;
-      height: 112px;
-      position: relative;
+      width: 58px;
+      height: 75px;
       z-index: 2;
-      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.5));
-      transition: filter 0.3s ease;
+      filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+      transform: scale(0.92);
     }
 
-    /* Comfort metrics bar */
+    /* CLIMATE MICRO-METRICS (4 TILES) */
     .comfort-bar {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-      gap: 14px;
-      background: var(--bg-led-card);
-      border: 1px solid var(--border-led);
-      border-radius: 16px;
-      padding: 14px 18px;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
     }
-    .comfort-bar:hover {
+    .comfort-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      box-shadow: var(--card-shine), var(--card-shadow);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .comfort-item:hover {
       transform: translateY(-2px);
       border-color: var(--border-color-hover);
-      box-shadow: var(--card-shadow);
     }
-    .comfort-item { display: flex; flex-direction: column; gap: 4px; }
-    .comfort-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
-    .comfort-val { font-size: 18px; font-weight: 600; color: var(--text-heading); display: flex; align-items: baseline; gap: 4px; }
-    .comfort-desc { font-size: 12px; color: var(--accent); transition: color 0.3s; }
+    .comfort-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .comfort-val {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text-heading);
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: baseline;
+      gap: 2px;
+      margin: 2px 0;
+    }
+    .comfort-val .comfort-unit {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+    .comfort-desc {
+      font-size: 12px;
+      color: var(--text-sub);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
+    /* PRIMARY SENSOR CARDS (TEMP & HUMIDITY) */
     .grid-row {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
     }
-
-    /* Metric Cards with Rich Hover */
     .card {
       background: var(--bg-card);
       border: 1px solid var(--border-color);
-      border-radius: 18px;
-      padding: 18px 20px 14px;
-      box-shadow: var(--card-shadow);
-      position: relative;
+      border-radius: var(--card-radius);
+      padding: 20px;
       display: flex;
       flex-direction: column;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, background 0.3s ease;
+      box-shadow: var(--card-shine), var(--card-shadow);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      transition: all 0.3s ease;
+      position: relative;
     }
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--card-shadow-hover);
       border-color: var(--border-color-hover);
-      background: var(--bg-card-hover);
+      box-shadow: var(--card-shine), 0 16px 42px -6px rgba(0, 0, 0, 0.65);
     }
     .card-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 8px;
+      margin-bottom: 12px;
     }
-    .card-title { font-size: 15px; color: var(--text-sub); font-weight: 500; transition: color 0.25s; }
-    .card:hover .card-title { color: var(--text-heading); }
-
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     .card-icon {
-      width: 22px;
-      height: 22px;
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: var(--badge-bg);
       display: flex;
       align-items: center;
       justify-content: center;
       color: var(--accent);
-      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease;
+      border: 1px solid var(--badge-border);
     }
-    .card:hover .card-icon {
-      transform: scale(1.18) rotate(4deg);
-      filter: drop-shadow(0 0 6px var(--accent-glow));
+    .card-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-heading);
     }
-
+    .status-badge {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.25s ease;
+    }
+    .badge-ok {
+      background: rgba(34, 197, 94, 0.15);
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      color: #4ade80;
+    }
+    .badge-warn {
+      background: rgba(234, 179, 8, 0.15);
+      border: 1px solid rgba(234, 179, 8, 0.35);
+      color: #facc15;
+    }
     .val-row {
       display: flex;
       align-items: baseline;
-      gap: 4px;
-      margin-bottom: 8px;
+      gap: 6px;
+      margin-bottom: 14px;
     }
     .val-num {
-      font-size: 34px;
-      font-weight: 600;
+      font-size: 42px;
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.03em;
       color: var(--text-heading);
-      letter-spacing: -1px;
-      font-variant-numeric: tabular-nums;
-      transition: transform 0.25s ease;
     }
-    .card:hover .val-num {
-      transform: scale(1.02);
+    .val-unit {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-muted);
     }
-    .val-unit { font-size: 18px; color: var(--text-sub); }
-
-    .status-badge {
-      display: inline-block;
-      align-self: flex-start;
-      padding: 3px 10px;
-      border-radius: 8px;
+    .trend-badge {
+      margin-left: auto;
       font-size: 12px;
-      font-weight: 500;
-      margin-bottom: 10px;
-      transition: all 0.25s ease;
-    }
-    .card:hover .status-badge {
-      transform: translateY(-1px);
-    }
-    .badge-ok { background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.25); }
-    .badge-warn { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.25); }
-    
-    .graph-container {
-      position: relative;
-      width: 100%;
-      height: 75px;
-      margin-top: auto;
-      cursor: crosshair;
-    }
-    svg.graph-svg { width: 100%; height: 100%; overflow: visible; }
-    path#t-line, path#h-line { transition: d 0.4s ease, stroke-width 0.25s ease; }
-    .graph-container:hover path#t-line,
-    .graph-container:hover path#h-line {
-      stroke-width: 3.5px;
-    }
-
-    .range-pill {
-      position: absolute;
-      left: 0;
-      padding: 2px 6px;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 6px;
-      font-size: 11px;
-      color: var(--text-sub);
-      pointer-events: none;
-      z-index: 2;
-      transition: all 0.2s ease;
-    }
-    .card:hover .range-pill {
-      border-color: var(--border-color-hover);
-      color: var(--text-main);
-    }
-    .range-max { top: 0; }
-    .range-min { bottom: 0; }
-    
-    .tooltip {
-      position: absolute;
-      padding: 4px 10px;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color-hover);
-      color: var(--text-heading);
-      font-size: 11px;
-      font-weight: 500;
-      border-radius: 6px;
-      pointer-events: none;
-      opacity: 0;
-      transform: translate(-50%, -120%);
-      transition: opacity 0.15s, transform 0.15s;
-      white-space: nowrap;
-      z-index: 10;
-      box-shadow: 0 6px 14px rgba(0,0,0,0.6);
-    }
-
-    /* Settings Card */
-    .settings-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 18px;
-      padding: 16px 20px;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease;
-    }
-    .settings-card:hover {
-      transform: translateY(-2px);
-      box-shadow: var(--card-shadow);
-      border-color: var(--border-color-hover);
-    }
-    .settings-header {
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--text-main);
-      margin-bottom: 12px;
-    }
-    .settings-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .setting-item label { display: block; font-size: 12px; color: var(--text-muted); margin-bottom: 4px; transition: color 0.2s; }
-    .setting-item:hover label { color: var(--text-main); }
-    .setting-item .inputs { display: flex; gap: 8px; align-items: center; }
-    .setting-item input[type="number"] {
-      width: 100%;
-      background: var(--bg-input);
-      border: 1px solid var(--border-color);
-      border-radius: 8px;
-      color: var(--text-heading);
-      padding: 7px 10px;
-      font-size: 13px;
-      outline: none;
-      transition: all 0.25s ease;
-    }
-    .setting-item input[type="number"]:hover {
-      border-color: var(--accent);
-      background: var(--bg-card-hover);
-    }
-    .setting-item input[type="number"]:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 3px var(--accent-glow);
-    }
-
-    .slider-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .slider-row input[type="range"] {
-      flex: 1;
-      accent-color: var(--accent-btn);
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .slider-row input[type="range"]:hover {
-      transform: scaleY(1.2);
-    }
-    .slider-val {
-      font-size: 13px;
       font-weight: 600;
-      color: var(--accent);
-      width: 38px;
-      text-align: right;
-      transition: transform 0.2s;
-    }
-    .slider-row:hover .slider-val {
-      transform: scale(1.1);
-    }
-
-    /* Save Button with Glow Lift */
-    .label-hint {
-      font-size: 11px;
-      color: var(--accent);
-      font-weight: 400;
-      margin-left: 4px;
-      opacity: 0.85;
-    }
-    .btn-reset {
-      background: var(--badge-bg);
-      border: 1px solid var(--badge-border);
+      padding: 3px 8px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
       color: var(--text-sub);
-      border-radius: 8px;
-      padding: 4px 10px;
-      font-size: 11px;
-      font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      transition: all 0.2s ease;
-    }
-    .btn-reset:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      transform: translateY(-1px);
-    }
-    .btn-reset:active {
-      transform: scale(0.96);
     }
 
-    .btn-save {
-      margin-top: 14px;
-      width: 100%;
-      background: var(--accent-btn);
-      color: #fff;
-      border: none;
-      padding: 11px;
-      border-radius: 8px;
-      font-weight: 500;
-      font-size: 13px;
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    /* COMFORT SPECTRUM BAR */
+    .spectrum-container {
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
     }
-    .btn-save:hover {
-      background: var(--accent-btn-hover);
-      box-shadow: 0 6px 18px var(--accent-glow);
-      transform: translateY(-2px);
+    .spectrum-track {
+      position: relative;
+      height: 8px;
+      border-radius: 4px;
+      background: var(--track-bg);
+      overflow: visible;
+      border: 1px solid rgba(255, 255, 255, 0.04);
     }
-    .btn-save:active {
-      transform: scale(0.98) translateY(0);
+    .spectrum-zone {
+      position: absolute;
+      top: 0;
+      height: 100%;
+      background: linear-gradient(90deg, rgba(34, 197, 94, 0.35), rgba(34, 197, 94, 0.5));
+      border-radius: 4px;
+      box-shadow: 0 0 10px rgba(34, 197, 94, 0.25);
+      transition: left 0.4s ease, width 0.4s ease;
     }
-
-    .system-card {
+    .spectrum-cursor {
+      position: absolute;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid var(--accent);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 10px var(--accent-glow), 0 2px 5px rgba(0, 0, 0, 0.5);
+      transition: left 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 2;
+    }
+    .spectrum-labels {
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 14px;
-      padding: 12px 18px;
-      font-size: 13px;
+      font-size: 11px;
       color: var(--text-muted);
-      transition: all 0.3s ease;
     }
-    .system-card:hover {
-      border-color: var(--border-color-hover);
-      transform: translateY(-1px);
+    .spectrum-target-hint {
+      color: #4ade80;
+      font-weight: 500;
     }
-    .system-card b { color: var(--text-main); }
 
+    /* SPARKLINE GRAPH */
+    .graph-container {
+      position: relative;
+      height: 85px;
+      width: 100%;
+      cursor: crosshair;
+      border-radius: 12px;
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 6px 4px 2px 4px;
+    }
+    .graph-svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+    .range-pill {
+      position: absolute;
+      right: 8px;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 1px 6px;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-muted);
+      z-index: 2;
+      pointer-events: none;
+    }
+    .range-max { top: 6px; }
+    .range-min { bottom: 6px; }
+    .tooltip {
+      position: absolute;
+      background: rgba(15, 17, 23, 0.92);
+      border: 1px solid var(--border-color-hover);
+      color: #ffffff;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 8px;
+      pointer-events: none;
+      transform: translate(-50%, -100%);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      white-space: nowrap;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
     .graph-timeline {
       display: flex;
       justify-content: space-between;
       font-size: 10px;
       color: var(--text-muted);
-      margin-top: 5px;
+      margin-top: 6px;
       padding: 0 4px;
-      user-select: none;
-      -webkit-user-select: none;
-      letter-spacing: 0.3px;
     }
 
-    /* ========== АДАПТИВНОСТЬ ДЛЯ ПЛАНШЕТОВ И IPAD (601px - 1024px) ========== */
-    @media (min-width: 601px) and (max-width: 1024px) {
-      .container { max-width: 95%; gap: 16px; }
-      .grid-row { gap: 14px; }
-      .card { padding: 18px 20px 14px; }
-      .val-num { font-size: 36px; }
-      .graph-container { height: 80px; }
-      .settings-grid { grid-template-columns: 1fr 1fr; gap: 14px; }
-    }
-
-    /* ========== АДАПТИВНОСТЬ ДЛЯ СМАРТФОНОВ (<= 600px) ========== */
-    @media (max-width: 600px) {
-      body {
-        padding: max(12px, env(safe-area-inset-top)) max(10px, env(safe-area-inset-right)) max(20px, env(safe-area-inset-bottom)) max(10px, env(safe-area-inset-left));
-      }
-      .header {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
-      }
-      .header-actions {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 8px;
-      }
-      .theme-select {
-        width: 100%;
-        min-height: 44px;
-        font-size: 14px;
-        box-sizing: border-box;
-      }
-      .btn-tg {
-        min-height: 44px;
-        padding: 0 16px;
-        justify-content: center;
-      }
-      .led-card {
-        flex-direction: column-reverse;
-        text-align: center;
-        padding: 18px 16px;
-        gap: 12px;
-      }
-      .led-info {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-      }
-      .led-badge-row {
-        justify-content: center;
-      }
-      .grid-row, .comfort-bar {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-      .settings-grid {
-        grid-template-columns: 1fr;
-        gap: 14px;
-      }
-      .setting-item input[type="number"] {
-        min-height: 42px;
-        font-size: 15px;
-      }
-      .setting-item input[type="range"] {
-        height: 32px;
-      }
-      .val-num {
-        font-size: 36px;
-      }
-      .graph-container {
-        height: 80px;
-        touch-action: pan-y;
-      }
-    }
-
-    .trend-badge {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--accent);
-      background: var(--badge-bg);
-      border: 1px solid var(--badge-border);
-      padding: 2px 7px;
-      border-radius: 8px;
-      margin-left: 8px;
-      letter-spacing: 0.3px;
-    }
-    .tools-row {
+    /* SEGMENTED SETTINGS CARD */
+    .settings-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 20px 24px;
       display: flex;
-      gap: 10px;
-      margin-top: 12px;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: var(--card-shine), var(--card-shadow);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
     }
-    @media (max-width: 600px) {
-      .tools-row { flex-direction: column; }
+    .settings-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
     }
-    .btn-tool {
+    .settings-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-heading);
+      letter-spacing: -0.01em;
+    }
+
+    /* SEGMENTED CONTROL TABS */
+    .segmented-tabs {
+      display: flex;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 3px;
+      gap: 4px;
+      width: 100%;
+    }
+    .tab-btn {
       flex: 1;
-      display: inline-flex;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 12px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
       align-items: center;
       justify-content: center;
       gap: 6px;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+    }
+    .tab-btn.active {
+      background: var(--bg-card);
+      color: var(--text-heading);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    /* TAB PANELS */
+    .tab-panel {
+      display: none;
+      animation: fadeInTab 0.25s ease;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+    @keyframes fadeInTab {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .setting-item {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .setting-item label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-sub);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .label-hint {
+      font-size: 11px;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+    .inputs {
+      display: flex;
+      gap: 8px;
+    }
+    .inputs input, .setting-item > input {
+      width: 100%;
       background: var(--bg-input);
       border: 1px solid var(--border-color);
-      color: var(--text-sub);
-      text-decoration: none;
+      border-radius: 10px;
       padding: 9px 12px;
-      border-radius: 8px;
-      font-size: 12px;
-      font-weight: 500;
+      color: var(--text-heading);
+      font-size: 13px;
+      font-weight: 600;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+    .inputs input:focus, .setting-item > input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    /* MODERN SLIDERS */
+    .slider-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 6px 12px;
+    }
+    .slider-row input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 3px;
+      outline: none;
+    }
+    .slider-row input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
       cursor: pointer;
-      transition: all 0.25s ease;
+      box-shadow: 0 0 10px var(--accent-glow);
+      border: 2px solid #ffffff;
+      transition: transform 0.1s ease;
+    }
+    .slider-row input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+    .slider-val {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-heading);
+      min-width: 44px;
+      text-align: right;
+    }
+
+    /* ACTION BUTTONS & TOOLS */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+    }
+    .btn-tool {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
     .btn-tool:hover {
       border-color: var(--accent);
       color: var(--text-heading);
-      background: var(--bg-card-hover);
+      background: rgba(255, 255, 255, 0.04);
       transform: translateY(-1px);
+    }
+    .btn-reset {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-color);
+      color: var(--text-sub);
+      padding: 6px 12px;
+      border-radius: 9px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-reset:hover {
+      color: var(--text-heading);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+    .btn-save {
+      background: var(--accent-btn);
+      color: #ffffff;
+      border: none;
+      padding: 13px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 16px rgba(2, 132, 199, 0.35);
+      margin-top: 4px;
+    }
+    .btn-save:hover {
+      background: var(--accent-btn-hover);
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.5);
+      transform: translateY(-1px);
+    }
+    .btn-save:active {
+      transform: translateY(0);
+    }
+
+    /* SYSTEM FOOTER */
+    .system-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--card-radius);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      font-size: 12px;
+      color: var(--text-muted);
+      box-shadow: var(--card-shine), var(--card-shadow);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .system-card b {
+      color: var(--text-heading);
+    }
+
+    /* PULSE ANIMATION */
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.92); }
+    }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 680px) {
+      .grid-row {
+        grid-template-columns: 1fr;
+      }
+      .comfort-bar {
+        grid-template-columns: 1fr 1fr;
+      }
+      .settings-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-halo-card {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        padding: 18px 20px;
+      }
+      .halo-viewport {
+        align-self: center;
+      }
+      .segmented-tabs {
+        overflow-x: auto;
+      }
+      .tab-btn {
+        padding: 7px 10px;
+        font-size: 11px;
+      }
+      .val-num {
+        font-size: 36px;
+      }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <div class="header">
+    <!-- HEADER -->
+    <header class="header">
       <div class="header-left">
-        <h2>Климат Квартира</h2>
+        <div class="brand-title">
+          <span class="brand-pulse"></span>
+          <h2>Jarvis Climate</h2>
+        </div>
         <div class="header-sub">
           <span>climat.local</span>
-          <span>•</span>
+          <span class="dot">•</span>
           <span id="clock-val">--:--:--</span>
-          <span>•</span>
+          <span class="dot">•</span>
           <div class="conn-badge" id="conn-badge" title="Статус реального времени SSE">
             <span class="ping-dot" id="ping-dot"></span>
             <span id="ping-text">Подключение...</span>
@@ -1063,23 +1273,29 @@
         </select>
 
         <!-- Telegram Button -->
-        <button class="btn-tg" onclick="sendTg()">
+        <button class="btn-tg" onclick="sendTg()" title="Отправить текущий отчёт в Telegram">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69.01-.03.01-.14-.07-.19-.08-.05-.19-.02-.27 0-.12.03-1.99 1.27-5.63 3.72-.53.36-1.01.54-1.44.53-.47-.01-1.38-.27-2.06-.49-.83-.27-1.49-.42-1.43-.88.03-.24.38-.49 1.03-.75 4.04-1.76 6.74-2.92 8.09-3.5 3.85-1.61 4.65-1.89 5.17-1.9.11 0 .37.03.54.17.14.12.18.28.2.45-.02.07-.02.22-.04.35z"/></svg>
           <span>Отчёт в TG</span>
         </button>
       </div>
-    </div>
+    </header>
 
-    <div class="led-card">
-      <div class="led-info">
-        <span class="led-title">Индикатор комфорта (LED HW-479)</span>
-        <span class="led-status" id="led-status-text">Определение...</span>
-        <span class="led-subtext" id="led-desc-text">Синхронизация с датчиком...</span>
-        <div class="led-badge-row">
+    <!-- HERO CARD: AMBIENT CLIMATE HALO -->
+    <div class="hero-halo-card">
+      <div class="hero-info">
+        <div class="hero-overline">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <span>Индикатор комфорта • LED HW-479</span>
+        </div>
+        <div class="hero-status" id="led-status-text">Идеальный баланс</div>
+        <div class="hero-desc" id="led-desc-text">Синхронизация с датчиком...</div>
+        <div class="hero-badge-row">
           <span class="mode-badge" id="mode-badge">☀️ День</span>
           <span class="mode-badge" id="bright-badge">Яркость: 100%</span>
         </div>
       </div>
-      <div class="led-viewport">
+      <div class="halo-viewport">
+        <div class="halo-ring" id="halo-ring"></div>
         <canvas id="flare-canvas" width="170" height="170"></canvas>
         <svg class="led-svg" viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -1115,45 +1331,76 @@
       </div>
     </div>
 
-    <!-- COMFORT METRICS -->
+    <!-- CLIMATE MICRO-METRICS (4 TILES) -->
     <div class="comfort-bar">
       <div class="comfort-item">
-        <span class="comfort-label">????????? ??? (Heat Index)</span>
-        <div class="comfort-val"><span id="heat-val">--</span><span style="font-size:14px;color:var(--text-muted)">?C</span></div>
-        <span class="comfort-desc" id="heat-desc">?? ?????????</span>
+        <div class="comfort-header">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4m0 4h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0z"/></svg>
+          <span>Ощущается</span>
+        </div>
+        <div class="comfort-val"><span id="heat-val">--</span><span class="comfort-unit">°C</span></div>
+        <span class="comfort-desc" id="heat-desc">Heat Index</span>
       </div>
       <div class="comfort-item">
-        <span class="comfort-label">????? ???? (Dew Point)</span>
-        <div class="comfort-val"><span id="dew-val">--</span><span style="font-size:14px;color:var(--text-muted)">?C</span></div>
+        <div class="comfort-header">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          <span>Точка росы</span>
+        </div>
+        <div class="comfort-val"><span id="dew-val">--</span><span class="comfort-unit">°C</span></div>
         <span class="comfort-desc" id="dew-desc">--</span>
       </div>
       <div class="comfort-item">
-        <span class="comfort-label">???. ????????? (?/??)</span>
-        <div class="comfort-val"><span id="abs-hum-val">--</span><span style="font-size:14px;color:var(--text-muted)">?/??</span></div>
-        <span class="comfort-desc" id="abs-hum-desc">????????????</span>
+        <div class="comfort-header">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 15a4 4 0 0 0 4 4h9a5 5 0 1 0-.1-9.9A7 7 0 0 0 3 15z"/></svg>
+          <span>Абс. влажность</span>
+        </div>
+        <div class="comfort-val"><span id="abs-hum-val">--</span><span class="comfort-unit">г/м³</span></div>
+        <span class="comfort-desc" id="abs-hum-desc">паросодержание</span>
       </div>
       <div class="comfort-item">
-        <span class="comfort-label">???? ??????? (?????????)</span>
+        <div class="comfort-header">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Риск плесени</span>
+        </div>
         <div class="comfort-val"><span id="mold-val">--</span></div>
-        <span class="comfort-desc" id="mold-desc">?????????</span>
+        <span class="comfort-desc" id="mold-desc">биобезопасность</span>
       </div>
     </div>
 
-    <!-- TEMP & HUM CARDS -->
+    <!-- PRIMARY SENSOR CARDS (TEMP & HUMIDITY) -->
     <div class="grid-row">
+      <!-- TEMPERATURE CARD -->
       <div class="card">
         <div class="card-top">
-          <span class="card-title">Температура</span>
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+          <div class="card-title-group">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/></svg>
+            </div>
+            <span class="card-title">Температура</span>
           </div>
+          <div id="temp-badge" class="status-badge badge-ok">В норме</div>
         </div>
+
         <div class="val-row">
           <span class="val-num" id="temp-val">--</span>
-          <span class="val-unit">?C</span>
-          <span class="trend-badge" id="temp-trend" title="????? ?? 1 ???">? ????.</span>
+          <span class="val-unit">°C</span>
+          <span class="trend-badge" id="temp-trend" title="Тренд за 1 час">~ стаб.</span>
         </div>
-        <div id="temp-badge" class="status-badge badge-ok">В норме</div>
+
+        <!-- COMFORT SPECTRUM BAR -->
+        <div class="spectrum-container" title="Положение относительно комфортной зоны ГОСТ">
+          <div class="spectrum-track">
+            <div class="spectrum-zone" id="t-spectrum-zone" style="left: 29%; width: 21%;"></div>
+            <div class="spectrum-cursor" id="t-spectrum-cursor" style="left: 40%;"></div>
+          </div>
+          <div class="spectrum-labels">
+            <span>15°C</span>
+            <span class="spectrum-target-hint">Зона комфорта</span>
+            <span>32°C</span>
+          </div>
+        </div>
+
+        <!-- SPARKLINE GRAPH -->
         <div class="graph-container" id="t-box" onmousemove="showTip(event, 't')" onmouseleave="hideTip('t')" ontouchstart="showTipTouch(event, 't')" ontouchmove="showTipTouch(event, 't')" ontouchend="hideTip('t')">
           <div class="tooltip" id="t-tip"></div>
           <span class="range-pill range-max" id="t-max-pill">--</span>
@@ -1170,23 +1417,42 @@
           </svg>
         </div>
         <div class="graph-timeline">
-          <span>-24?</span><span>-18?</span><span>-12?</span><span>-6?</span><span>??????</span>
+          <span>-24ч</span><span>-18ч</span><span>-12ч</span><span>-6ч</span><span>сейчас</span>
         </div>
       </div>
 
+      <!-- HUMIDITY CARD -->
       <div class="card">
         <div class="card-top">
-          <span class="card-title">Влажность</span>
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+          <div class="card-title-group">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+            </div>
+            <span class="card-title">Влажность</span>
           </div>
+          <div id="hum-badge" class="status-badge badge-ok">В норме</div>
         </div>
+
         <div class="val-row">
           <span class="val-num" id="hum-val">--</span>
           <span class="val-unit">%</span>
-          <span class="trend-badge" id="hum-trend" title="????? ?? 1 ???">? ????.</span>
+          <span class="trend-badge" id="hum-trend" title="Тренд за 1 час">~ стаб.</span>
         </div>
-        <div id="hum-badge" class="status-badge badge-ok">В норме</div>
+
+        <!-- COMFORT SPECTRUM BAR -->
+        <div class="spectrum-container" title="Положение относительно комфортной зоны ГОСТ">
+          <div class="spectrum-track">
+            <div class="spectrum-zone" id="h-spectrum-zone" style="left: 35%; width: 29%;"></div>
+            <div class="spectrum-cursor" id="h-spectrum-cursor" style="left: 45%;"></div>
+          </div>
+          <div class="spectrum-labels">
+            <span>15%</span>
+            <span class="spectrum-target-hint">Зона комфорта</span>
+            <span>85%</span>
+          </div>
+        </div>
+
+        <!-- SPARKLINE GRAPH -->
         <div class="graph-container" id="h-box" onmousemove="showTip(event, 'h')" onmouseleave="hideTip('h')" ontouchstart="showTipTouch(event, 'h')" ontouchmove="showTipTouch(event, 'h')" ontouchend="hideTip('h')">
           <div class="tooltip" id="h-tip"></div>
           <span class="range-pill range-max" id="h-max-pill">--</span>
@@ -1203,85 +1469,121 @@
           </svg>
         </div>
         <div class="graph-timeline">
-          <span>-24?</span><span>-18?</span><span>-12?</span><span>-6?</span><span>??????</span>
+          <span>-24ч</span><span>-18ч</span><span>-12ч</span><span>-6ч</span><span>сейчас</span>
         </div>
       </div>
     </div>
 
-    <!-- SETTINGS -->
+    <!-- SEGMENTED SETTINGS CARD -->
     <div class="settings-card">
-      <div class="settings-header" style="display:flex;justify-content:space-between;align-items:center;">
-        <span>Параметры комфорта и светодиода</span>
-        <button class="btn-reset" onclick="resetToStandards()" title="Сбросить на ГОСТ / ВОЗ">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      <div class="settings-header">
+        <span class="settings-title">Параметры и управление системой</span>
+        <button class="btn-reset" onclick="resetToStandards()" title="Сбросить пороги на ГОСТ / ВОЗ">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
           <span>Стандарты ГОСТ/ВОЗ</span>
         </button>
       </div>
-      <div class="settings-grid">
-        <div class="setting-item">
-          <label>Температура (°C, Мин / Макс) <span class="label-hint">ГОСТ: 20–23.5</span></label>
-          <div class="inputs">
-            <input type="number" step="0.5" id="cfg-tmin">
-            <input type="number" step="0.5" id="cfg-tmax">
-          </div>
-        </div>
-        <div class="setting-item">
-          <label>Влажность (%, Мин / Макс) <span class="label-hint">ГОСТ: 40–60</span></label>
-          <div class="inputs">
-            <input type="number" step="1" id="cfg-hmin">
-            <input type="number" step="1" id="cfg-hmax">
-          </div>
-        </div>
 
-        <div class="setting-item">
-          <label>Дневная яркость LED (%) <span class="label-hint">Дефолт: 80%</span></label>
-          <div class="slider-row">
-            <input type="range" min="0" max="100" id="cfg-bday" oninput="document.getElementById('bday-val').innerText = this.value + '%'">
-            <span class="slider-val" id="bday-val">80%</span>
-          </div>
-        </div>
+      <!-- SEGMENTED TABS -->
+      <div class="segmented-tabs">
+        <button class="tab-btn active" onclick="switchTab('comfort')">🎯 Комфорт</button>
+        <button class="tab-btn" onclick="switchTab('night')">🌙 Ночь и LED</button>
+        <button class="tab-btn" onclick="switchTab('calib')">⚖️ Калибровка</button>
+        <button class="tab-btn" onclick="switchTab('tools')">🛠️ Инструменты</button>
+      </div>
 
-        <div class="setting-item">
-          <label>Ночная яркость LED (%) <span class="label-hint">Дефолт: 5%</span></label>
-          <div class="slider-row">
-            <input type="range" min="0" max="100" id="cfg-bnight" oninput="document.getElementById('bnight-val').innerText = this.value + '%'">
-            <span class="slider-val" id="bnight-val">5%</span>
+      <!-- TAB 1: COMFORT TARGETS -->
+      <div class="tab-panel active" id="tab-comfort">
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label>Температура (°C, Мин / Макс) <span class="label-hint">ГОСТ: 20–23.5</span></label>
+            <div class="inputs">
+              <input type="number" step="0.5" id="cfg-tmin" placeholder="20.0">
+              <input type="number" step="0.5" id="cfg-tmax" placeholder="23.5">
+            </div>
           </div>
-        </div>
-
-        <div class="setting-item">
-          <label>Ночной режим: Старт (час: 0..23) <span class="label-hint">23:00</span></label>
-          <input type="number" min="0" max="23" id="cfg-nstart">
-        </div>
-        <div class="setting-item">
-          <label>Ночной режим: Конец (час: 0..23) <span class="label-hint">07:00</span></label>
-          <input type="number" min="0" max="23" id="cfg-nend">
-        </div>
-        <div class="setting-item">
-          <label>?????????? ??????? (??????????? ?????)</label>
-          <div class="inputs">
-            <input type="number" id="cfg-toff" step="0.1" min="-5.0" max="5.0" value="0.0" title="???????? ??????????? (?C)">
-            <input type="number" id="cfg-hoff" step="0.5" min="-15.0" max="15.0" value="0.0" title="???????? ????????? (%)">
+          <div class="setting-item">
+            <label>Влажность (%, Мин / Макс) <span class="label-hint">ГОСТ: 40–60</span></label>
+            <div class="inputs">
+              <input type="number" step="1" id="cfg-hmin" placeholder="40">
+              <input type="number" step="1" id="cfg-hmax" placeholder="60">
+            </div>
           </div>
         </div>
       </div>
-      <div class="tools-row">
-        <a href="/api/export.csv" class="btn-tool" download title="??????? ???????? ??? ? Excel/CSV">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>??????? CSV (24?)</span>
-        </a>
-        <button class="btn-tool" id="btn-mute" onclick="toggleMute()" title="????????? ?????? ? Telegram">
-          <span id="mute-icon">??</span>
-          <span id="mute-text">????????? ?????? (1?)</span>
-        </button>
+
+      <!-- TAB 2: NIGHT SCHEDULE & LED -->
+      <div class="tab-panel" id="tab-night">
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label>Дневная яркость LED (%) <span class="label-hint">Дефолт: 80%</span></label>
+            <div class="slider-row">
+              <input type="range" min="0" max="100" id="cfg-bday" oninput="document.getElementById('bday-val').innerText = this.value + '%'">
+              <span class="slider-val" id="bday-val">80%</span>
+            </div>
+          </div>
+          <div class="setting-item">
+            <label>Ночная яркость LED (%) <span class="label-hint">Дефолт: 5%</span></label>
+            <div class="slider-row">
+              <input type="range" min="0" max="100" id="cfg-bnight" oninput="document.getElementById('bnight-val').innerText = this.value + '%'">
+              <span class="slider-val" id="bnight-val">5%</span>
+            </div>
+          </div>
+          <div class="setting-item">
+            <label>Ночной режим: Старт (час: 0..23) <span class="label-hint">23:00</span></label>
+            <input type="number" min="0" max="23" id="cfg-nstart">
+          </div>
+          <div class="setting-item">
+            <label>Ночной режим: Конец (час: 0..23) <span class="label-hint">07:00</span></label>
+            <input type="number" min="0" max="23" id="cfg-nend">
+          </div>
+        </div>
       </div>
-      <button class="btn-save" onclick="saveSettings()">Сохранить настройки в память платы</button>
+
+      <!-- TAB 3: SENSOR CALIBRATION -->
+      <div class="tab-panel" id="tab-calib">
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label>Офсет температуры (°C) <span class="label-hint">диапазон: -5.0..+5.0</span></label>
+            <input type="number" id="cfg-toff" step="0.1" min="-5.0" max="5.0" value="0.0" title="Офсет температуры (°C)">
+          </div>
+          <div class="setting-item">
+            <label>Офсет влажности (%) <span class="label-hint">диапазон: -15.0..+15.0</span></label>
+            <input type="number" id="cfg-hoff" step="0.5" min="-15.0" max="15.0" value="0.0" title="Офсет влажности (%)">
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin:8px 0 0 0;">
+          💡 Офсеты прибавляются к "сырым" показаниям аппаратного датчика перед расчётами комфорта и точки росы.
+        </p>
+      </div>
+
+      <!-- TAB 4: TOOLS & UTILITIES -->
+      <div class="tab-panel" id="tab-tools">
+        <div class="tools-grid">
+          <a href="/api/export.csv" class="btn-tool" download title="Скачать историю за 24 часа в формате CSV/Excel">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Экспорт CSV (24ч)</span>
+          </a>
+          <button class="btn-tool" id="btn-mute" onclick="toggleMute()" title="Заглушить алерты в Telegram">
+            <span id="mute-icon">🔔</span>
+            <span id="mute-text">Заглушить алерты (1ч)</span>
+          </button>
+          <a href="/api/data" target="_blank" class="btn-tool" title="Открыть отладочный JSON поток">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            <span>REST API (/api/data)</span>
+          </a>
+        </div>
+      </div>
+
+      <button class="btn-save" onclick="saveSettings()">💾 Сохранить настройки в память платы</button>
     </div>
 
-    <div class="system-card">
+    <!-- SYSTEM FOOTER -->
+    <footer class="system-card">
       <span>Wi-Fi: <b id="wifi-val">--</b> dBm</span>
       <span>Аптайм: <b id="uptime-val">--</b> мин.</span>
-    </div>
+      <span>Ядро: <b>ESP32 v2.4 Hardened</b></span>
+    </footer>
   </div>
 
   <script>
@@ -1309,13 +1611,24 @@
     }
 
     const savedTheme = localStorage.getItem('jarvis_theme') || 'cozy';
-    document.getElementById('theme-select').value = savedTheme;
+    const themeSelect = document.getElementById('theme-select');
+    if (themeSelect) themeSelect.value = savedTheme;
     changeTheme(savedTheme);
+
+    // TAB SWITCHING
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('.tab-btn')).find(b => b.getAttribute('onclick').includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+      const panel = document.getElementById('tab-' + tabId);
+      if (panel) panel.classList.add('active');
+    }
 
     // SMOOTH NUMBER INTERPOLATION (COUNTUP / ODOMETER EFFECT)
     const animValues = {};
 
-    function animateValue(elemId, targetVal, decimals = 1, duration = 500) {
+    function animateValue(elemId, targetVal, decimals = 1, duration = 400) {
       const elem = document.getElementById(elemId);
       if (!elem) return;
 
@@ -1352,7 +1665,7 @@
     }
 
     // STARBURST LED SIMULATION
-    const RAY_COUNT = 260;
+    const RAY_COUNT = 240;
     const rayAngles = [];
     const rayLengths = [];
     const rayWidths = [];
@@ -1362,9 +1675,9 @@
       let angle = (i / RAY_COUNT) * Math.PI * 2 + (Math.random() - 0.5) * 0.04;
       rayAngles.push(angle);
       let isMainBurst = (angle > 0.4 && angle < 1.4);
-      let len = isMainBurst ? 65 + Math.random() * 85 : 30 + Math.random() * 55;
+      let len = isMainBurst ? 60 + Math.random() * 80 : 25 + Math.random() * 50;
       rayLengths.push(len);
-      rayWidths.push(0.6 + Math.random() * 1.4);
+      rayWidths.push(0.6 + Math.random() * 1.3);
       rayOpacities.push(0.18 + Math.random() * 0.7);
     }
 
@@ -1413,8 +1726,8 @@
       const ctx = cvs.getContext('2d');
       ctx.clearRect(0, 0, cvs.width, cvs.height);
 
-      const cx = 82;
-      const cy = 68;
+      const cx = 85;
+      const cy = 70;
       const scale = Math.max(0.08, brightnessFactor);
 
       for (let i = 0; i < RAY_COUNT; i++) {
@@ -1438,7 +1751,7 @@
         ctx.stroke();
       }
 
-      let coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 32 * scale);
+      let coreGrad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 30 * scale);
       coreGrad.addColorStop(0, `rgba(255, 255, 255, ${scale})`);
       coreGrad.addColorStop(0.25, `rgba(${r}, ${g}, ${b}, ${0.85 * scale})`);
       coreGrad.addColorStop(0.65, `rgba(${r}, ${g}, ${b}, ${0.3 * scale})`);
@@ -1446,7 +1759,7 @@
 
       ctx.fillStyle = coreGrad;
       ctx.beginPath();
-      ctx.arc(cx, cy, 32 * scale, 0, Math.PI * 2);
+      ctx.arc(cx, cy, 30 * scale, 0, Math.PI * 2);
       ctx.fill();
     }
 
@@ -1457,14 +1770,26 @@
 
       drawStarburst(led.r, led.g, led.b, bFactor);
 
-      document.getElementById('domeStop1').setAttribute('stop-color', `rgb(${rgb})`);
-      document.getElementById('domeStop2').setAttribute('stop-color', `rgb(${Math.round(led.r*0.75)}, ${Math.round(led.g*0.75)}, ${Math.round(led.b*0.75)})`);
-      document.getElementById('domeStop3').setAttribute('stop-color', `rgb(${Math.round(led.r*0.25)}, ${Math.round(led.g*0.25)}, ${Math.round(led.b*0.25)})`);
+      const dStop1 = document.getElementById('domeStop1');
+      const dStop2 = document.getElementById('domeStop2');
+      const dStop3 = document.getElementById('domeStop3');
+      if (dStop1) dStop1.setAttribute('stop-color', `rgb(${rgb})`);
+      if (dStop2) dStop2.setAttribute('stop-color', `rgb(${Math.round(led.r*0.75)}, ${Math.round(led.g*0.75)}, ${Math.round(led.b*0.75)})`);
+      if (dStop3) dStop3.setAttribute('stop-color', `rgb(${Math.round(led.r*0.25)}, ${Math.round(led.g*0.25)}, ${Math.round(led.b*0.25)})`);
 
       const statusText = document.getElementById('led-status-text');
-      statusText.innerText = led.status;
-      statusText.style.color = `rgb(${rgb})`;
-      document.getElementById('led-desc-text').innerText = led.desc;
+      if (statusText) {
+        statusText.innerText = led.status;
+        statusText.style.color = `rgb(${rgb})`;
+      }
+      const descText = document.getElementById('led-desc-text');
+      if (descText) descText.innerText = led.desc;
+
+      const haloRing = document.getElementById('halo-ring');
+      if (haloRing) {
+        haloRing.style.boxShadow = `inset 0 0 20px rgba(${rgb}, 0.25), 0 0 25px rgba(${rgb}, 0.35)`;
+        haloRing.style.borderColor = `rgba(${rgb}, 0.3)`;
+      }
     }
 
     function buildSmoothPath(arr, width, height) {
@@ -1472,7 +1797,7 @@
       let min = Math.min(...arr);
       let max = Math.max(...arr);
       if (max === min) { max += 0.5; min -= 0.5; }
-      
+
       const stepX = width / (arr.length - 1 || 1);
       const points = arr.map((val, i) => {
         let norm = (val - min) / (max - min);
@@ -1494,8 +1819,8 @@
 
     // UPDATE UI FROM DATA WITH SMOOTH ANIMATIONS
     function applyData(data) {
-      tPoints = data.tHist.length ? data.tHist : [data.t];
-      hPoints = data.hHist.length ? data.hHist : [data.h];
+      tPoints = (data.tHist && data.tHist.length) ? data.tHist : [data.t];
+      hPoints = (data.hHist && data.hHist.length) ? data.hHist : [data.h];
 
       // Smooth countup animations for metrics
       animateValue('temp-val', data.t, 1);
@@ -1511,19 +1836,18 @@
       const mIcon = document.getElementById('mute-icon');
       if (mText && mIcon) {
         if (data.isMuted) {
-          mText.innerText = "?????? ????????? (???.)";
-          mIcon.innerText = "??";
+          mText.innerText = "Алерты заглушены (вкл.)";
+          mIcon.innerText = "🔕";
         } else {
-          mText.innerText = "????????? ?????? (1?)";
-          mIcon.innerText = "??";
+          mText.innerText = "Заглушить алерты (1ч)";
+          mIcon.innerText = "🔔";
         }
       }
-
 
       document.getElementById('wifi-val').innerText = data.rssi;
       document.getElementById('uptime-val').innerText = data.uptime;
       document.getElementById('clock-val').innerText = data.time || "--:--:--";
-      document.getElementById('dew-desc').innerText = data.dewDesc;
+      document.getElementById('dew-desc').innerText = data.dewDesc || "--";
 
       document.getElementById('mode-badge').innerText = data.isNight ? "🌙 Ночь" : "☀️ День";
       document.getElementById('bright-badge').innerText = "Яркость: " + data.curB + "%";
@@ -1531,7 +1855,7 @@
       if (data.sensor) {
         const sBadge = document.getElementById('sensor-badge');
         if (sBadge) {
-          sBadge.innerText = data.sensor.indexOf('SHT') !== -1 ? '🟢 ' + data.sensor : '🔵 ' + data.sensor;
+          sBadge.innerText = (data.sensor.indexOf('SHT') !== -1) ? '🟢 ' + data.sensor : '🔵 ' + data.sensor;
         }
       }
       if (data.sseCount !== undefined) {
@@ -1558,6 +1882,33 @@
         document.getElementById('cfg-toff').value = (data.tOff !== undefined) ? data.tOff : 0.0;
         document.getElementById('cfg-hoff').value = (data.hOff !== undefined) ? data.hOff : 0.0;
         configLoaded = true;
+      }
+
+      // Update Comfort Spectrum Bars (Apple / Nest pattern)
+      const tMinScale = 15.0, tMaxScale = 32.0;
+      const tPct = Math.min(100, Math.max(0, ((data.t - tMinScale) / (tMaxScale - tMinScale)) * 100));
+      const tZoneLeft = Math.min(100, Math.max(0, ((data.cfgTMin - tMinScale) / (tMaxScale - tMinScale)) * 100));
+      const tZoneWidth = Math.min(100 - tZoneLeft, Math.max(0, ((data.cfgTMax - data.cfgTMin) / (tMaxScale - tMinScale)) * 100));
+
+      const tCursor = document.getElementById('t-spectrum-cursor');
+      const tZone = document.getElementById('t-spectrum-zone');
+      if (tCursor) tCursor.style.left = tPct + '%';
+      if (tZone) {
+        tZone.style.left = tZoneLeft + '%';
+        tZone.style.width = tZoneWidth + '%';
+      }
+
+      const hMinScale = 15.0, hMaxScale = 85.0;
+      const hPct = Math.min(100, Math.max(0, ((data.h - hMinScale) / (hMaxScale - hMinScale)) * 100));
+      const hZoneLeft = Math.min(100, Math.max(0, ((data.cfgHMin - hMinScale) / (hMaxScale - hMinScale)) * 100));
+      const hZoneWidth = Math.min(100 - hZoneLeft, Math.max(0, ((data.cfgHMax - data.cfgHMin) / (hMaxScale - hMinScale)) * 100));
+
+      const hCursor = document.getElementById('h-spectrum-cursor');
+      const hZone = document.getElementById('h-spectrum-zone');
+      if (hCursor) hCursor.style.left = hPct + '%';
+      if (hZone) {
+        hZone.style.left = hZoneLeft + '%';
+        hZone.style.width = hZoneWidth + '%';
       }
 
       const tMin = Math.min(...tPoints);
@@ -1589,7 +1940,6 @@
         hBadge.className = "status-badge badge-warn";
         hBadge.innerText = (dp >= 18.0) ? "Душно (Сауна)" : "Влажно";
       } else {
-        // Влажность по % в норме, но проверяем духоту по точке росы
         if (dp >= 16.0) {
           hBadge.className = "status-badge badge-warn";
           hBadge.innerText = "Душновато";
@@ -1614,8 +1964,10 @@
     function updatePingBadge(status, text) {
       const badge = document.getElementById('conn-badge');
       const pingText = document.getElementById('ping-text');
-      badge.className = 'conn-badge ' + status;
-      pingText.innerText = text;
+      if (badge && pingText) {
+        badge.className = 'conn-badge ' + status;
+        pingText.innerText = text;
+      }
     }
 
     // INITIAL FETCH WITH RTT MEASUREMENT
@@ -1654,7 +2006,7 @@
         sseSource.onerror = (err) => {
           console.warn("SSE connection lost, reconnecting in 5s...", err);
           updatePingBadge('offline', 'Переподключение...');
-          sseSource.close();
+          if (sseSource) sseSource.close();
           setTimeout(connectSSE, 5000);
         };
       } else {
@@ -1671,10 +2023,10 @@
       const rect = box.getBoundingClientRect();
       const x = e.clientX - rect.left;
       const idx = Math.min(Math.max(Math.round((x / rect.width) * (pts.length - 1)), 0), pts.length - 1);
-      
+
       const val = pts[idx].toFixed(1) + (type === 't' ? ' °C' : ' %');
       const minsAgo = Math.round((pts.length - 1 - idx) * 5);
-      
+
       tip.innerText = `${val} (${minsAgo === 0 ? 'сейчас' : minsAgo + ' мин. назад'})`;
       tip.style.left = x + 'px';
       tip.style.top = '25px';
@@ -1688,7 +2040,8 @@
     }
 
     function hideTip(type) {
-      document.getElementById(type + '-tip').style.opacity = '0';
+      const tip = document.getElementById(type + '-tip');
+      if (tip) tip.style.opacity = '0';
     }
 
     function resetToStandards() {
@@ -1723,20 +2076,23 @@
         return;
       }
 
-      const res = await fetch('/api/save', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (res.ok) {
-        alert('Настройки и яркость сохранены в память ESP32!');
-        initialFetch();
-      } else {
-        alert('Ошибка при сохранении настроек!');
+      try {
+        const res = await fetch('/api/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        if (res.ok) {
+          alert('Настройки и пороги комфорта успешно сохранены в EEPROM/NVS ESP32!');
+          initialFetch();
+        } else {
+          alert('Ошибка при сохранении настроек на плате!');
+        }
+      } catch (err) {
+        alert('Сетевая ошибка при отправке настроек!');
       }
     }
 
-    
     let currentlyMuted = false;
     async function toggleMute() {
       const endpoint = currentlyMuted ? '/api/unmute' : '/api/mute';
@@ -1746,13 +2102,13 @@
         const mText = document.getElementById('mute-text');
         const mIcon = document.getElementById('mute-icon');
         if (currentlyMuted) {
-          mText.innerText = "?????? ????????? (???.)";
-          mIcon.innerText = "??";
-          alert("?????? ? Telegram ????????? ?? 1 ???.");
+          mText.innerText = "Алерты заглушены (вкл.)";
+          mIcon.innerText = "🔕";
+          alert("Алерты в Telegram успешно заглушены на 1 час.");
         } else {
-          mText.innerText = "????????? ?????? (1?)";
-          mIcon.innerText = "??";
-          alert("?????? ? Telegram ????? ???????.");
+          mText.innerText = "Заглушить алерты (1ч)";
+          mIcon.innerText = "🔔";
+          alert("Алерты в Telegram снова включены.");
         }
       } catch (err) {
         console.error("Mute error:", err);
@@ -1760,8 +2116,12 @@
     }
 
     async function sendTg() {
-      await fetch('/api/send_tg');
-      alert('Отчёт отправлен в Telegram!');
+      try {
+        await fetch('/api/send_tg');
+        alert('Отчёт успешно отправлен в Telegram!');
+      } catch(err) {
+        alert('Ошибка при отправке отчёта в Telegram!');
+      }
     }
 
     initialFetch();
