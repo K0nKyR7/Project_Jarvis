@@ -29,6 +29,8 @@
 #include "telegram.h"
 #include "webserver.h"
 #include "mqtt_handler.h"
+#include "captive_portal.h"
+#include "homekit_integration.h"
 
 // ========== ПОТОКОБЕЗОПАСНЫЙ МЬЮТЕКС FREERTOS ДЛЯ TELEGRAM & TLS ==========
 SemaphoreHandle_t botMutex = NULL;
@@ -93,22 +95,12 @@ void setup() {
     loadSettings(prefs);
     loadHistory(prefs);
 
-    // Wi-Fi
-    Serial.printf("Connecting to Wi-Fi: %s", ssid);
-    WiFi.mode(WIFI_STA);
-    WiFi.setAutoReconnect(true);
-    WiFi.begin(ssid, password);
-
-    int attempts = 0;
-    while (WiFi.status() != WL_CONNECTED && attempts < 40) {
-        delay(500);
-        Serial.print(".");
-        attempts++;
-    }
-
-    if (WiFi.status() != WL_CONNECTED) {
-        Serial.println("\nWi-Fi FAILED — restarting...");
-        ESP.restart();
+    // Wi-Fi с поддержкой Captive Portal (автономная смена сети)
+    if (!connectWiFiWithPortal(prefs)) {
+        Serial.println("[CaptivePortal] Режим настройки активен. Точка доступа: Jarvis-Setup (192.168.4.1)");
+        esp_task_wdt_init(WDT_TIMEOUT_SEC, true);
+        esp_task_wdt_add(NULL);
+        return;
     }
 
     Serial.printf("\nWi-Fi connected! IP: %s\n", WiFi.localIP().toString().c_str());
@@ -158,6 +150,9 @@ void setup() {
     server.on("/drain.jpg", [](){ handleDrainImage(server); });
     server.on("/themes/drain.jpg", [](){ handleDrainImage(server); });
     server.on("/manifest.json", [](){ handleManifest(server); });
+    server.on("/sw.js", [](){ handleServiceWorker(server); });
+    server.on("/icon.svg", [](){ handleAppIcon(server); });
+    server.on("/api/update", HTTP_POST, [](){ handleUpdateDone(server); }, [](){ handleUpdateUpload(server); });
     server.on("/api/data", [](){ handleApiData(server); });
     server.on("/api/events", [](){ handleApiEvents(server); });
     server.on("/api/save", HTTP_POST, [](){ handleApiSave(server, prefs); });
@@ -220,6 +215,8 @@ void setup() {
         isNightTime() ? "🌙 Ночь" : "☀️ День");
     sendWithKeyboard(bot, CHAT_ID, msgBuf);
 
+    initHomeKit();
+
     Serial.println("========= READY =========\n");
 }
 
@@ -227,6 +224,12 @@ void setup() {
 void loop() {
     // 0. Сброс Watchdog
     esp_task_wdt_reset();
+
+    // 0.1 Автономный Wi-Fi Captive Portal (если сеть не настроена)
+    if (portalActive) {
+        handleCaptivePortal();
+        return;
+    }
 
     // 1. OTA
     ArduinoOTA.handle();
@@ -244,6 +247,8 @@ void loop() {
     // 3. Чтение датчика из кеша и аппаратное обновление LED
     readSensorCached();
     processSensorData();
+    updateHomeKit(cachedTemp, cachedHum);
+    loopHomeKit();
 
     // 4. Веб-сервер и realtime push SSE (до 4 клиентов параллельно)
     server.handleClient();

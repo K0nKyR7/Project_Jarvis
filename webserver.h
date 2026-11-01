@@ -1,6 +1,7 @@
 #pragma once
 #include <WebServer.h>
 #include <ArduinoJson.h>
+#include <Update.h>
 #include "config.h"
 #include "web_html_gz.h"
 #include "themes/cozy_jpg.h"
@@ -85,18 +86,138 @@ void handleDrainImage(WebServer &server) {
     server.send_P(200, "image/jpeg", (const char*)drain_jpg, drain_jpg_len);
 }
 
-// ========== PWA MANIFEST ==========
+// ========== PWA MANIFEST, SERVICE WORKER & ICONS ==========
 
 void handleManifest(WebServer &server) {
+    server.sendHeader("Cache-Control", "public, max-age=86400");
     static const char manifest[] PROGMEM = R"rawliteral({
-  "name": "Климат Квартира",
-  "short_name": "Климат",
+  "name": "Project Jarvis — Климат",
+  "short_name": "Jarvis",
+  "description": "Мониторинг микроклимата и качества воздуха Jarvis",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#090a0d",
-  "theme_color": "#121318"
+  "theme_color": "#0b0f19",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 })rawliteral";
     server.send(200, "application/json", manifest);
+}
+
+void handleServiceWorker(WebServer &server) {
+    server.sendHeader("Content-Type", "application/javascript");
+    server.sendHeader("Service-Worker-Allowed", "/");
+    server.sendHeader("Cache-Control", "no-cache");
+    static const char sw[] PROGMEM = R"rawliteral(
+const CACHE_NAME = 'jarvis-pwa-v3';
+const ASSETS = ['/', '/manifest.json', '/icon.svg'];
+
+self.addEventListener('install', (e) => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(ASSETS))
+  );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', (e) => {
+  e.waitUntil(
+    caches.keys().then((keys) =>
+      Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+    )
+  );
+  self.clients.claim();
+});
+
+self.addEventListener('fetch', (e) => {
+  if (e.request.url.includes('/api/')) {
+    return;
+  }
+  e.respondWith(
+    fetch(e.request).catch(() => caches.match(e.request))
+  );
+});
+)rawliteral";
+    server.send(200, "application/javascript", sw);
+}
+
+void handleAppIcon(WebServer &server) {
+    server.sendHeader("Content-Type", "image/svg+xml");
+    server.sendHeader("Cache-Control", "public, max-age=604800");
+    static const char iconSvg[] PROGMEM = R"rawliteral(<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#0b0f19"/>
+    </radialGradient>
+    <linearGradient id="neon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="512" height="512" rx="128" fill="url(#bg)"/>
+  <rect width="508" height="508" x="2" y="2" rx="126" fill="none" stroke="url(#neon)" stroke-width="4" stroke-opacity="0.4"/>
+  <circle cx="256" cy="256" r="160" fill="none" stroke="url(#neon)" stroke-width="12" stroke-dasharray="16 8" filter="url(#glow)"/>
+  <circle cx="256" cy="256" r="120" fill="rgba(56, 189, 248, 0.08)"/>
+  <path d="M220 180 L292 180 L292 270 C292 315 256 345 220 345 C195 345 175 330 170 305" fill="none" stroke="url(#neon)" stroke-width="24" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+  <circle cx="256" cy="130" r="14" fill="#38bdf8" filter="url(#glow)"/>
+  <circle cx="370" cy="256" r="10" fill="#818cf8"/>
+  <circle cx="256" cy="382" r="10" fill="#c084fc"/>
+  <circle cx="142" cy="256" r="10" fill="#38bdf8"/>
+</svg>)rawliteral";
+    server.send(200, "image/svg+xml", iconSvg);
+}
+
+// ========== WEB OTA FIRMWARE UPDATE ==========
+
+void handleUpdateDone(WebServer &server) {
+    server.sendHeader("Connection", "close");
+    if (Update.hasError()) {
+        server.send(500, "application/json", "{\"status\":\"error\",\"msg\":\"Ошибка прошивки по воздуху\"}");
+    } else {
+        server.send(200, "application/json", "{\"status\":\"success\",\"msg\":\"Прошивка успешно установлена! Перезагрузка...\"}");
+        delay(1000);
+        ESP.restart();
+    }
+}
+
+void handleUpdateUpload(WebServer &server) {
+    HTTPUpload& upload = server.upload();
+    if (upload.status == UPLOAD_FILE_START) {
+        Serial.printf("[WebOTA] Начало загрузки прошивки: %s\n", upload.filename.c_str());
+        // UPDATE_SIZE_UNKNOWN сообщает ядру выделить весь доступный свободный раздел OTA
+        if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
+            Update.printError(Serial);
+        }
+    } else if (upload.status == UPLOAD_FILE_WRITE) {
+        if (Update.write(upload.buf, upload.currentSize) != upload.currentSize) {
+            Update.printError(Serial);
+        }
+    } else if (upload.status == UPLOAD_FILE_END) {
+        if (Update.end(true)) {
+            Serial.printf("[WebOTA] Успешно завершено! Записано: %u байт\n", upload.totalSize);
+        } else {
+            Update.printError(Serial);
+        }
+    } else if (upload.status == UPLOAD_FILE_ABORTED) {
+        Update.end();
+        Serial.println("[WebOTA] Обновление отменено");
+    }
 }
 
 // ========== СБОРКА JSON ДАННЫХ (ОБЩАЯ) ==========

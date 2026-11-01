@@ -205,7 +205,31 @@ static void mqttPublishDiscovery() {
         "\"device\":%s}", devInfo);
     mqttPublish("homeassistant/sensor/jarvis_esp32/heat_index/config", discHI, true);
 
-    // 5. RGB Светодиод / Ночной режим
+    // 5. Абсолютная влажность (г/м³)
+    char discAH[512];
+    snprintf(discAH, sizeof(discAH),
+        "{\"name\":\"Абсолютная влажность\","
+        "\"unique_id\":\"jarvis_abs_humidity\","
+        "\"state_topic\":\"jarvis/state\","
+        "\"unit_of_measurement\":\"г/м³\","
+        "\"state_class\":\"measurement\","
+        "\"icon\":\"mdi:water-percent\","
+        "\"value_template\":\"{{ value_json.abs_humidity }}\",\""
+        "device\":%s}", devInfo);
+    mqttPublish("homeassistant/sensor/jarvis_esp32/abs_humidity/config", discAH, true);
+
+    // 6. Риск плесени
+    char discMold[512];
+    snprintf(discMold, sizeof(discMold),
+        "{\"name\":\"Риск плесени\","
+        "\"unique_id\":\"jarvis_mold_risk\","
+        "\"state_topic\":\"jarvis/state\","
+        "\"icon\":\"mdi:shield-alert-outline\","
+        "\"value_template\":\"{{ value_json.mold_risk }}\",\""
+        "device\":%s}", devInfo);
+    mqttPublish("homeassistant/sensor/jarvis_esp32/mold_risk/config", discMold, true);
+
+    // 7. RGB Светодиод / Ночной режим
     char discLED[512];
     snprintf(discLED, sizeof(discLED),
         "{\"name\":\"Индикатор климата\","
@@ -227,18 +251,28 @@ static void mqttPublishState() {
 
     float dp = calculateDewPoint(cachedTemp, cachedHum);
     float hi = calculateHeatIndex(cachedTemp, cachedHum);
+    float ah = calculateAbsoluteHumidity(cachedTemp, cachedHum);
+    const char* mold = getMoldRiskLevel(cachedTemp, cachedHum, dp);
 
-    char stateJson[384];
+    char stateJson[512];
     snprintf(stateJson, sizeof(stateJson),
         "{\"temperature\":%.1f,"
         "\"humidity\":%.1f,"
         "\"dew_point\":%.1f,"
         "\"heat_index\":%.1f,"
+        "\"abs_humidity\":%.1f,"
+        "\"mold_risk\":\"%s\","
         "\"brightness\":%d,"
         "\"is_night\":%s,"
         "\"sensor\":\"%s\","
         "\"rssi\":%ld,"
         "\"uptime\":%lu}",
+        isnan(cachedTemp) ? 0.0f : cachedTemp,
+        isnan(cachedHum) ? 0.0f : cachedHum,
+        isnan(dp) ? 0.0f : dp,
+        isnan(hi) ? 0.0f : hi,
+        isnan(ah) ? 0.0f : ah,
+        mold,
         isnan(cachedTemp) ? 0.0f : cachedTemp,
         isnan(cachedHum) ? 0.0f : cachedHum,
         isnan(dp) ? 0.0f : dp,

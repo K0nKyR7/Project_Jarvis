@@ -91,5 +91,11 @@ const char* password = "YOUR_WIFI_PASSWORD";
 #define OTA_HOSTNAME  "climat"
 #define OTA_PASSWORD  "jarvis2026"
 
+// ========== APPLE HOMEKIT (HOMESPAN) ==========
+// Раскомментируйте строку ниже для включения нативной поддержки Apple HomeKit.
+// Требуется установка библиотеки HomeSpan через Library Manager Arduino IDE.
+// Код сопряжения HomeKit по умолчанию: 466-37-726
+// #define ENABLE_HOMESPAN
+
 // ========== WATCHDOG ==========
 #define WDT_TIMEOUT_SEC  30
