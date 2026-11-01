@@ -142,13 +142,21 @@ void setup() {
     // Маршруты Веб-сервера
     server.on("/", [](){ handleRoot(server); });
     server.on("/cozy.jpg", [](){ handleCozyImage(server); });
+    server.on("/themes/cozy.jpg", [](){ handleCozyImage(server); });
     server.on("/fog.jpg", [](){ handleFogImage(server); });
+    server.on("/themes/fog.jpg", [](){ handleFogImage(server); });
     server.on("/oasis.jpg", [](){ handleOasisImage(server); });
+    server.on("/themes/oasis.jpg", [](){ handleOasisImage(server); });
     server.on("/nordic.jpg", [](){ handleNordicImage(server); });
+    server.on("/themes/nordic.jpg", [](){ handleNordicImage(server); });
     server.on("/dining.jpg", [](){ handleDiningImage(server); });
+    server.on("/themes/dining.jpg", [](){ handleDiningImage(server); });
     server.on("/viperr.jpg", [](){ handleViperrImage(server); });
+    server.on("/themes/viperr.jpg", [](){ handleViperrImage(server); });
     server.on("/y2k.jpg", [](){ handleY2kImage(server); });
+    server.on("/themes/y2k.jpg", [](){ handleY2kImage(server); });
     server.on("/drain.jpg", [](){ handleDrainImage(server); });
+    server.on("/themes/drain.jpg", [](){ handleDrainImage(server); });
     server.on("/manifest.json", [](){ handleManifest(server); });
     server.on("/api/data", [](){ handleApiData(server); });
     server.on("/api/events", [](){ handleApiEvents(server); });
